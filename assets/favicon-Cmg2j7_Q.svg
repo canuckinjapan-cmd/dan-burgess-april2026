@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <style type="text/css"><![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500&display=swap');
+      .txt {
+        font-family: 'Zen Maru Gothic', sans-serif;
+        font-weight: 500;
+        fill: #f27d26;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+    ]]></style>
+  </defs>
+  <rect width="32" height="32" fill="black"/>
+  <text 
+    x="16" 
+    y="16.5" 
+    font-size="28" 
+    class="txt"
+  >団</text>
+</svg>
