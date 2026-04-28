@@ -26,6 +26,24 @@
 
 <body class="lang-ja">
 
+    <!-- Language Redirect Script -->
+    <script>
+        (function () {
+            if (!localStorage.getItem('lang_pref')) {
+                var lang = navigator.language || navigator.userLanguage;
+                var isJP = lang.indexOf('ja') === 0;
+                var currentPath = window.location.pathname;
+                var isCurrentlyJP = currentPath.endsWith('index-j.html');
+                
+                if (!isJP && isCurrentlyJP) {
+                    // Redirect to English if they are on JP but pref is not JP
+                    var newPath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1) + 'index.html';
+                    window.location.href = newPath;
+                }
+            }
+        })();
+    </script>
+
     <!-- Header -->
     <header id="header">
         <div class="header-logo-target">
@@ -570,8 +588,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="src/main.tsx"></script>
 </body>
 
 </html>

@@ -1,9 +1,12 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
     // 1. Set current year in footer
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
 
     // 2. Floating Logo Animation
     const floatingLogo = document.getElementById('floating-logo');
+    if (!floatingLogo) return; // Prevent errors if elements aren't ready
+    
     const secondaryLogo = document.getElementById('secondary-logo');
     const heroTarget = document.querySelector('.hero-logo-target');
     const headerTarget = document.querySelector('.header-logo-target');
@@ -685,6 +688,12 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCards();
     }
     initAboutCardStacking();
+}
 
-});
+// Start the application logic
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
 

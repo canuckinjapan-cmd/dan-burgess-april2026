@@ -31,8 +31,14 @@
         (function () {
             if (!localStorage.getItem('lang_pref')) {
                 var lang = navigator.language || navigator.userLanguage;
-                if (lang.indexOf('ja') === 0 && window.location.pathname.indexOf('index-j.html') === -1) {
-                    window.location.href = 'index-j.html';
+                var isJP = lang.indexOf('ja') === 0;
+                var currentPath = window.location.pathname;
+                var isAlreadyJP = currentPath.endsWith('index-j.html');
+                
+                if (isJP && !isAlreadyJP) {
+                    // Redirect to Japanese if not already there
+                    var newPath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1) + 'index-j.html';
+                    window.location.href = newPath;
                 }
             }
         })();
@@ -603,8 +609,7 @@
         </div>
     </a>
 
-    <script src="script.js"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="src/main.tsx"></script>
 </body>
 
 </html>
