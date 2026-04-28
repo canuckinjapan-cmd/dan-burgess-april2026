@@ -16,17 +16,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62.5..125,100..900&family=Source+Sans+3:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Sans+JP:wght@900&family=Zen+Maru+Gothic:wght@500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62.5..125,100..900&family=Source+Sans+3:wght@300;400;500;600&family=Noto+Sans+JP:wght@900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
 
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 </head>
 
-<body class="lang-ja hero-cursor-area">
-    <div id="hero-cursor" class="hero-cursor">団</div>
+<body class="lang-ja">
+
     <!-- Header -->
     <header id="header">
         <div class="header-logo-target">
@@ -217,26 +216,24 @@
                 </div>
             </div>
         </div>
-        <div class="about-cards-stack">
-            <div class="about-card-wrapper">
-                <div class="about-card card-canada">
-                    <div class="card-bg-overlay"></div>
-                    <h3>🍁 カナダでのルーツ</h3>
-                    <p>私のキャリアはカナダでの雑誌レイアウトや看板デザインから始まり、伝統的な美学と技術的基盤を融合させてきました。この初期のビジュアル・コミュニケーションへの関わりが、明快さとインパクトを追求する現在のスタイルの礎となっています。</p>
-                </div>
-            </div>
-            <div class="about-card-wrapper">
-                <div class="about-card card-japan">
-                    <div class="card-bg-overlay"></div>
-                    <h3>🇯🇵&nbsp;&nbsp;日本での精密な仕事</h3>
-                    <p>1992年から日本を拠点とし、長野でのWindowsゲームのローカライズや、東京でのグローバルIT企業のUI制作コーディネートに携わってきました。これらの経験を通じて、技術的な精密さと異文化間のストーリーテリングに対する深い敬意を培いました。</p>
-                </div>
-            </div>
-            <div class="about-card-wrapper">
-                <div class="about-card card-digital">
-                    <div class="card-bg-overlay"></div>
-                    <h3>📱 デジタルファースト・デザイン</h3>
-                    <p>現在は、ビジョンと立ち上げの間のギャップを埋めるため、ノーコード開発に特化しています。技術的な摩擦を取り除くことで、クライアントがユーザー価値や、拡張性のある洗練されたデジタル体験に集中できるようサポートします。</p>
+        <div class="about-card-viewport">
+            <div class="about-card-main">
+                <div class="about-card-content-strip">
+                    <div class="about-card-segment card-canada">
+                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Canada-roots.jpg');"></div>
+                        <h3>🍁 カナダでのルーツ</h3>
+                        <p>私のキャリアはカナダでの雑誌レイアウトや看板デザインから始まり、伝統的な美学と技術的基盤を融合させてきました。この初期のビジュアル・コミュニケーションへの関わりが、明快さとインパクトを追求する現在のスタイルの礎となっています。</p>
+                    </div>
+                    <div class="about-card-segment card-japan">
+                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Japan-precision.jpg');"></div>
+                        <h3>🇯🇵&nbsp;&nbsp;日本での精密な仕事</h3>
+                        <p>1992年から日本を拠点とし、長野でのWindowsゲームのローカライズや、東京でのグローバルIT企業のUI制作コーディネートに携わってきました。これらの経験を通じて、技術的な精密さと異文化間のストーリーテリングに対する深い敬意を培いました。</p>
+                    </div>
+                    <div class="about-card-segment card-digital">
+                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Digital-first.jpg');"></div>
+                        <h3>📱 デジタルファースト・デザイン</h3>
+                        <p>現在は、ビジョンと立ち上げの間のギャップを埋めるため、ノーコード開発に特化しています。技術的な摩擦を取り除くことで、クライアントがユーザー価値や、拡張性のある洗練されたデジタル体験に集中できるようサポートします。</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -250,7 +247,6 @@
             <div class="scroll-word"><span class="word-inner">スクロール</span></div>
             <div class="scroll-word delay"><span class="word-inner">ダウン</span></div>
         </div>
-        <div class="transition-text">お仕事のご依頼受付中</div>
     </div>
 
     <!-- Portfolio Section -->
@@ -259,7 +255,8 @@
         <p class="portfolio-subtitle">
             <span class="ripple-letter" style="animation-delay: 0s;">ク</span><span class="ripple-letter" style="animation-delay: 0.1s;">リ</span><span class="ripple-letter" style="animation-delay: 0.2s;">ッ</span><span class="ripple-letter" style="animation-delay: 0.3s;">ク</span>して別タブで開く <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1.2em;">south_east</span>
         </p>
-        <div class="portfolio-stack">
+        <div class="portfolio-viewport">
+            <div class="portfolio-stack">
             <!-- Item 1 -->
             <div class="portfolio-item gym-item" data-pc-e="https://danburgess.com/2026-assets/Taka-PC-E.jpeg"
                 data-tablet-h-e="https://danburgess.com/2026-assets/Taka-PC-E.jpeg"
@@ -323,19 +320,12 @@
                     </div>
                 </div>
             </div>
-            <!-- Item 4: Custom Graphic Creation Slideshow (pure HTML/CSS) -->
-            <div class="portfolio-item graphic-item">
-                <div class="portfolio-caption">カスタムグラフィック制作例</div>
-                <div class="portfolio-image-wrapper">
-                    <img class="main-image" src="https://danburgess.com/2026-assets/DBD-infographic01.jpg" alt="Custom Graphic 1">
-                    <img class="overlay-image" src="https://danburgess.com/2026-assets/DBD-Tokyo-Tower01.jpg" alt="Custom Graphic 2">
-                </div>
+
             </div>
         </div>
     </section>
-
     <!-- Services Transition -->
-    <div class="section-transition center">
+    <div class="section-transition right">
         <div class="scroll-down-anim">
             <div class="scroll-arrow">↓</div>
             <div class="scroll-word"><span class="word-inner">スクロール</span></div>
@@ -358,8 +348,7 @@
                     </ul>
                 </div>
                 <div class="service-visual">
-                    <!-- Placeholder for AI Studio simulation animation -->
-                    <img src="https://picsum.photos/seed/nocode/800/600" alt="ノーコードWeb開発のアニメーション">
+                    <img src="https://danburgess.com/2026-assets/DBD-No-code.jpg" alt="ノーコードWeb開発">
                 </div>
             </div>
             <!-- Card 2 -->
@@ -373,8 +362,7 @@
                     </ul>
                 </div>
                 <div class="service-visual">
-                    <!-- Placeholder for EN/JA fade animation -->
-                    <img src="https://picsum.photos/seed/uxui/800/600" alt="UX/UIローカライズのアニメーション">
+                    <img src="https://danburgess.com/2026-assets/DBD-UX-UI.jpg" alt="UX/UIローカライズ">
                 </div>
             </div>
             <!-- Card 3 -->
@@ -388,7 +376,7 @@
                     </ul>
                 </div>
                 <div class="service-visual">
-                    <img src="https://danburgess.com/2026-assets/DBD-mition01.jpg" alt="3Dビジュアル & モーションデザイン">
+                    <img src="https://danburgess.com/2026-assets/DBD-motion-design.jpg" alt="3Dビジュアル & モーションデザイン">
                 </div>
             </div>
             <!-- Card 4 -->
@@ -410,7 +398,7 @@
     </section>
 
     <!-- Process Transition -->
-    <div class="section-transition center no-border">
+    <div class="section-transition right no-border">
         <div class="scroll-down-anim">
             <div class="scroll-arrow">↓</div>
             <div class="scroll-word"><span class="word-inner">スクロール</span></div>

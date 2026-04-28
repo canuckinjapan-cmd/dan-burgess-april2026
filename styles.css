@@ -43,7 +43,7 @@
     --color-white: #ffffff;
     --font-display: 'Archivo', sans-serif;
     --font-body: 'Source Sans 3', sans-serif;
-    --font-serif: 'Playfair Display', serif;
+    --font-serif: 'Archivo', sans-serif;
     --font-ja: 'Noto Sans JP', sans-serif;
     --header-height: 60px;
 }
@@ -480,53 +480,57 @@ html[lang="ja"] .ca-red {
     }
 }
 
-/* About Section Stacking Cards */
+/* About Section Single Card Sliding Content */
 .about {
-    padding: 0 40px 0; /* Removed bottom padding entirely */
+    padding: 0 40px 0;
     background-image: url("https://danburgess.com/2026-assets/rice-paper-2.png");
     background-color: var(--color-bg);
     position: relative;
-    /* Height controls the scroll duration of the stacking animation */
-    height: 400vh; /* Increased to allow for a long pause after the last card */
+    height: 500vh; /* Increased for better scroll control */
 }
 
-.about-cards-stack {
+.about-card-viewport {
     position: sticky;
     top: 0;
     height: 100vh;
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: visible;
 }
 
-.about-card-wrapper {
-    position: absolute;
-    top: 160px; 
-    left: 0;
+.about-card-main {
+    position: relative;
+    top: 160px;
     width: 100%;
+    height: 580px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    border-radius: 0px;
+    border: 1.583333px solid #646464;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.about-card-content-strip {
     display: flex;
-    align-items: flex-start; 
-    justify-content: center;
-    pointer-events: none; 
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
     will-change: transform;
 }
 
-.about-card {
-    pointer-events: auto; /* Re-enable for the card itself */
-    background: #d1d1d1; /* Grey initially */
-    padding: 100px 80px;
-    min-height: 580px;
-    border-radius: 42px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    transition: background 1.2s ease, transform 0.1s linear, box-shadow 1.2s ease, filter 1.2s ease, opacity 1.2s ease;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    z-index: 10;
-    will-change: transform, background, opacity;
+.about-card-segment {
+    flex: 0 0 100%;
     width: 100%;
-    transform-origin: top center; /* Ensure scaling doesn't move the top edge */
+    height: 100%;
+    padding: 100px 80px;
     position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .card-bg-overlay {
@@ -540,81 +544,58 @@ html[lang="ja"] .ca-red {
     background-size: cover;
     background-position: center right;
     background-repeat: no-repeat;
-    opacity: 0; /* Fully transparent when grey */
-    transition: opacity 1.2s ease;
+    opacity: 0.5;
     mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 50%);
     -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 50%);
 }
 
-.about-card.is-active .card-bg-overlay {
-    opacity: 0.5; /* Fainter visibility for better text legibility */
-}
-
-/* Specific background images */
-.card-canada .card-bg-overlay {
-    background-image: url('https://www.danburgess.com/2026-assets/DBD-Canada-roots.jpg');
-}
-
-.card-japan .card-bg-overlay {
-    background-image: url('https://www.danburgess.com/2026-assets/DBD-Japan-precision.jpg');
-}
-
-.card-digital .card-bg-overlay {
-    background-image: url('https://www.danburgess.com/2026-assets/DBD-Digital-first.jpg');
-}
-
-@media (max-width: 768px) {
-    .card-bg-overlay {
-        mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
-        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
-        background-position: center top;
-        opacity: 0 !important;
-    }
-    .about-card.is-active .card-bg-overlay {
-        opacity: 0.2 !important;
-    }
-}
-
-.about-card h3, 
-.about-card p {
-    position: relative;
-    z-index: 1;
-}
-
-.about-card-wrapper:nth-child(1) { z-index: 10; }
-.about-card-wrapper:nth-child(2) { z-index: 20; }
-.about-card-wrapper:nth-child(3) { z-index: 30; }
-
-.about-card.is-active {
-    background: #ffffff;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-}
-
-/* Card underneath scaling effect (like reference site) */
-.about-card.is-stacked {
-    filter: brightness(0.6); /* Slightly darker */
-    opacity: 1; /* Opaque as requested */
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-}
-
-.about-card h3 {
+.about-card-segment h3 {
     font-family: var(--font-display);
     font-size: 48px;
     margin-bottom: 32px;
     color: #111;
+    position: relative;
+    z-index: 1;
 }
 
-.about-card p {
+.about-card-segment p {
     font-size: 24px;
     line-height: 1.7;
     color: #444;
     max-width: 900px;
+    position: relative;
+    z-index: 1;
 }
 
-/* Remove hover zoom */
-.about-card:hover {
-    transform: none;
+@media (max-width: 768px) {
+    .about {
+        padding: 0 10px 0; /* Make card wider on mobile */
+    }
+    .about-card-main {
+        height: 400px; /* Reduced height to fit on screen */
+        top: 160px; /* Moved up to reduce gap above title */
+        padding-bottom: 0;
+    }
+    .about-card-segment {
+        padding: 30px 20px; /* Narrower vertical padding to move text up */
+        height: 400px;
+    }
+    .about-card-segment h3 {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+    .about-card-segment p {
+        font-size: 17px;
+        line-height: 1.5; /* Less space between lines */
+    }
+    .card-bg-overlay {
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+        background-position: center top;
+        opacity: 0.2;
+    }
 }
+
 
 /* Transitions & Scroll Down */
 .section-transition {
@@ -628,6 +609,10 @@ html[lang="ja"] .ca-red {
 
 .section-transition.center {
     justify-content: center;
+}
+
+.section-transition.right {
+    justify-content: flex-end;
 }
 
 .section-transition.no-border {
@@ -680,15 +665,31 @@ html[lang="ja"] .ca-red {
 
 /* Portfolio Section */
 .portfolio {
-    padding: 60px 40px;
+    padding: 60px 40px 0;
+    position: relative;
+    height: 600vh; /* Controlled by JS for pacing */
+}
+
+.portfolio-viewport {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: visible;
 }
 
 .section-title {
     font-family: var(--font-display);
     font-size: 8vw;
     line-height: 0.9;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
     text-align: center;
+    position: relative;
+    z-index: 5;
 }
 
 .portfolio-subtitle {
@@ -696,8 +697,9 @@ html[lang="ja"] .ca-red {
     font-size: 24px;
     font-weight: 400;
     text-align: center;
-    margin-bottom: 60px;
-    margin-top: -40px;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 5;
 }
 
 /* Ripple Animation for "Click" */
@@ -731,123 +733,66 @@ html[lang="ja"] .ca-red {
 }
 
 .portfolio-stack {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 60px;
     align-items: center;
-    padding-bottom: 100px;
 }
 
 .portfolio-item {
     width: 100%;
     max-width: 1200px;
-    height: 80vh;
-    position: relative;
+    height: 70vh; 
+    position: absolute;
+    top: 120px; /* Aligned with design services card position */
     cursor: pointer;
     overflow: hidden;
-    border-radius: 20px;
-    transform-origin: top center;
-    will-change: transform;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border-radius: 0px;
+    border: 1.583333px solid #646464;
+    will-change: transform, opacity;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    background: #fff;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .portfolio-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: none; /* Controlled by JS now */
 }
 
-.portfolio-item:hover img {
-    transform: scale(1.05);
+.portfolio-item:hover .typewriter-container p {
+    opacity: 1;
+}
+
+.portfolio-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    will-change: transform;
 }
 
 .main-image,
 .overlay-image {
-    position: absolute;
-    top: 0;
-    left: 0;
+    flex: 0 0 100%;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: top left;
+    position: relative !important;
 }
 
-/* Synchronous Push-Through Animation */
-.main-image {
-    animation: slideMain 8s ease-in-out infinite;
-}
-
+/* Remove CSS animations as we'll sync with scroll */
+.main-image,
 .overlay-image {
-    animation: slideOverlay 8s ease-in-out infinite;
-}
-
-@keyframes slideMain {
-    0% {
-        transform: translateX(0);
-    }
-
-    42% {
-        transform: translateX(0);
-    }
-
-    50% {
-        transform: translateX(100%);
-    }
-
-    50.001% {
-        transform: translateX(-100%);
-    }
-
-    92% {
-        transform: translateX(-100%);
-    }
-
-    100% {
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideOverlay {
-    0% {
-        transform: translateX(-100%);
-    }
-
-    42% {
-        transform: translateX(-100%);
-    }
-
-    50% {
-        transform: translateX(0);
-    }
-
-    92% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(100%);
-    }
-}
-
-.gym-item .main-image,
-.gym-item .overlay-image {
-    animation-delay: 0s;
-}
-
-.real-estate-item .main-image,
-.real-estate-item .overlay-image {
-    animation-delay: 2s;
-}
-
-.car-item .main-image,
-.car-item .overlay-image {
-    animation-delay: 4s;
-}
-
-.graphic-item .main-image,
-.graphic-item .overlay-image {
-    animation-delay: 6s;
+    animation: none !important;
 }
 
 .portfolio-caption {
@@ -883,8 +828,8 @@ html[lang="ja"] .ca-red {
     display: flex;
     align-items: stretch;
     background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 20px;
+    border: 1.583333px solid #646464;
+    border-radius: 0px;
     overflow: hidden;
     height: 70vh;
     position: sticky;
@@ -1154,8 +1099,8 @@ html[lang="ja"] .ca-red {
     margin: 0 auto;
     background-color: var(--color-bg);
     background-image: url("https://danburgess.com/2026-assets/rice-paper-2.png");
-    border: 1px solid #333;
-    border-radius: 20px;
+    border: 1.583333px solid #646464;
+    border-radius: 0px;
     padding: 40px 60px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
 }
@@ -1686,6 +1631,18 @@ html[lang="ja"] .ca-red {
     .section-title {
         font-size: 48px;
         margin-bottom: 40px;
+    }
+
+    .portfolio {
+        padding: 40px 10px 0;
+        height: 600vh !important;
+    }
+
+    .portfolio-item {
+        height: 80vh;
+        top: 80px; /* Aligned with design services card position */
+        border-radius: 0px;
+        border: 1.583333px solid #646464;
     }
 
     .portfolio-subtitle {
@@ -2446,71 +2403,3 @@ html[lang="ja"] .ca-red {
     }
 }
 
-/* Custom Hero Cursor */
-.hero-cursor-area {
-    cursor: none;
-}
-
-.hero-cursor {
-    position: fixed;
-    top: -100px; /* Hide offscreen initially */
-    left: -100px;
-    width: auto;
-    height: auto;
-    pointer-events: none;
-    z-index: 10000;
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 46px; /* Increased 20% from 38px */
-    font-weight: 500;
-    color: var(--color-orange);
-    /* Lightened 3D shadow effect */
-    text-shadow: 
-        1px 1px 0 #000,
-        2px 2px 0 #000;
-    opacity: 0;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hero-cursor-trail {
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    font-family: 'Zen Maru Gothic', sans-serif;
-    font-size: 46px;
-    font-weight: 500;
-    color: rgba(150, 150, 150, 0.7);
-    filter: blur(5px);
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    pointer-events: none;
-    will-change: transform, opacity;
-}
-
-.hero-cursor.visible {
-    opacity: 1;
-}
-
-/* Re-enable default cursor outside hero and on interactive elements */
-.hero-cursor-area a, 
-.hero-cursor-area button,
-.hero-cursor-area .portfolio-item {
-    cursor: auto !important;
-}
-
-@media (max-width: 1024px) {
-    .hero-cursor-area {
-        cursor: auto !important;
-    }
-    .hero-cursor {
-        display: none !important;
-    }
-    .hero-cursor-trail {
-        display: none !important;
-    }
-}

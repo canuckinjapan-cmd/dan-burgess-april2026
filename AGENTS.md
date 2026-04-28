@@ -16,11 +16,6 @@ When starting a task, follow this protocol before modifying code:
 
 ## 🖱️ Interactive Patterns
 
-### Custom Hero Cursor
-- **Implementation**: The cursor and trail are managed in `styles.css` (`.hero-cursor-trail`) and `script.js` (mousemove listener).
-- **Font**: Always use `Zen Maru Gothic`.
-- **Constraint**: The cursor must be disabled on screens $\leq$ 1024px. Ensure both CSS `display: none !important;` and JS event filtering are active to prevent artifacts.
-
 ### Stacking Cards (Scroll Logic)
 - **Class**: `.service-card`
 - **Logic**: Cards slide from `-100%` width and scale/opacity transition based on scroll position. 

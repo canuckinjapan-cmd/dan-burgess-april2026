@@ -16,17 +16,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62.5..125,100..900&family=Source+Sans+3:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Zen+Maru+Gothic:wght@500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62.5..125,100..900&family=Source+Sans+3:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
 
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 </head>
 
-<body class="hero-cursor-area">
-    <div id="hero-cursor" class="hero-cursor">団</div>
+<body class="">
+
     <!-- Language Redirect Script -->
     <script>
         (function () {
@@ -230,26 +229,24 @@
                 </div>
             </div>
         </div>
-        <div class="about-cards-stack">
-            <div class="about-card-wrapper">
-                <div class="about-card card-canada">
-                    <div class="card-bg-overlay"></div>
-                    <h3>🍁 Canada Roots</h3>
-                    <p>My journey began in Canada with magazine layouts and sign design, blending traditional aesthetics with technical foundations. This early exposure to visual communication set the stage for a career dedicated to clarity and impact.</p>
-                </div>
-            </div>
-            <div class="about-card-wrapper">
-                <div class="about-card card-japan">
-                    <div class="card-bg-overlay"></div>
-                    <h3>🇯🇵&nbsp;&nbsp;Japan Precision</h3>
-                    <p>Based in Japan since 1992, I’ve localized Windows games in Nagano and coordinated UI production for global tech giants in Tokyo. This experience instilled a deep respect for technical precision and cross-cultural storytelling.</p>
-                </div>
-            </div>
-            <div class="about-card-wrapper">
-                <div class="about-card card-digital">
-                    <div class="card-bg-overlay"></div>
-                    <h3>📱 Digital-first Design</h3>
-                    <p>Today, I specialize in No-Code development to bridge the gap between vision and launch. By removing technical friction, I help clients focus on user value and polished digital experiences that scale.</p>
+        <div class="about-card-viewport">
+            <div class="about-card-main">
+                <div class="about-card-content-strip">
+                    <div class="about-card-segment card-canada">
+                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Canada-roots.jpg');"></div>
+                        <h3>🍁 Canada Roots</h3>
+                        <p>My journey began in Canada with magazine layouts and sign design, blending traditional aesthetics with technical foundations. This early exposure to visual communication set the stage for a career dedicated to clarity and impact.</p>
+                    </div>
+                    <div class="about-card-segment card-japan">
+                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Japan-precision.jpg');"></div>
+                        <h3>🇯🇵&nbsp;&nbsp;Japan Precision</h3>
+                        <p>Based in Japan since 1992, I’ve localized Windows games in Nagano and coordinated UI production for global tech giants in Tokyo. This experience instilled a deep respect for technical precision and cross-cultural storytelling.</p>
+                    </div>
+                    <div class="about-card-segment card-digital">
+                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Digital-first.jpg');"></div>
+                        <h3>📱 Digital-first Design</h3>
+                        <p>Today, I specialize in No-Code development to bridge the gap between vision and launch. By removing technical friction, I help clients focus on user value and polished digital experiences that scale.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -263,7 +260,6 @@
             <div class="scroll-word"><span class="word-inner">SCROLL</span></div>
             <div class="scroll-word delay"><span class="word-inner">DOWN</span></div>
         </div>
-        <div class="transition-text">AVAILABLE FOR WORK</div>
     </div>
 
     <!-- Portfolio Section -->
@@ -272,7 +268,8 @@
         <p class="portfolio-subtitle">
             <span class="ripple-letter" style="animation-delay: 0s;">C</span><span class="ripple-letter" style="animation-delay: 0.1s;">l</span><span class="ripple-letter" style="animation-delay: 0.2s;">i</span><span class="ripple-letter" style="animation-delay: 0.3s;">c</span><span class="ripple-letter" style="animation-delay: 0.4s;">k</span> to open in separate tab <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1.2em;">south_east</span>
         </p>
-        <div class="portfolio-stack">
+        <div class="portfolio-viewport">
+            <div class="portfolio-stack">
             <!-- Item 1 -->
             <div class="portfolio-item gym-item" data-pc-e="https://danburgess.com/2026-assets/Taka-PC-E.jpeg"
                 data-tablet-h-e="https://danburgess.com/2026-assets/Taka-PC-E.jpeg"
@@ -336,19 +333,11 @@
                     </div>
                 </div>
             </div>
-            <!-- Item 4: Custom Graphic Creation Slideshow (pure HTML/CSS) -->
-            <div class="portfolio-item graphic-item">
-                <div class="portfolio-caption">Examples of custom graphic creation</div>
-                <div class="portfolio-image-wrapper">
-                    <img class="main-image" src="https://danburgess.com/2026-assets/DBD-infographic01.jpg" alt="Custom Graphic 1">
-                    <img class="overlay-image" src="https://danburgess.com/2026-assets/DBD-Tokyo-Tower01.jpg" alt="Custom Graphic 2">
-                </div>
+
             </div>
         </div>
     </section>
-
-    <!-- Services Transition -->
-    <div class="section-transition center">
+    <div class="section-transition right">
         <div class="scroll-down-anim">
             <div class="scroll-arrow">↓</div>
             <div class="scroll-word"><span class="word-inner">SCROLL</span></div>
@@ -371,8 +360,7 @@
                     </ul>
                 </div>
                 <div class="service-visual">
-                    <!-- Placeholder for AI Studio simulation animation -->
-                    <img src="https://picsum.photos/seed/nocode/800/600" alt="No-Code Web Development Animation">
+                    <img src="https://danburgess.com/2026-assets/DBD-No-code.jpg" alt="No-Code Web Development">
                 </div>
             </div>
             <!-- Card 2 -->
@@ -386,8 +374,7 @@
                     </ul>
                 </div>
                 <div class="service-visual">
-                    <!-- Placeholder for EN/JA fade animation -->
-                    <img src="https://picsum.photos/seed/uxui/800/600" alt="UX/UI Localization Animation">
+                    <img src="https://danburgess.com/2026-assets/DBD-UX-UI.jpg" alt="UX/UI Localization">
                 </div>
             </div>
             <!-- Card 3 -->
@@ -401,7 +388,7 @@
                     </ul>
                 </div>
                 <div class="service-visual">
-                    <img src="https://danburgess.com/2026-assets/DBD-mition01.jpg" alt="3D Visual & Motion Design">
+                    <img src="https://danburgess.com/2026-assets/DBD-motion-design.jpg" alt="3D Visual & Motion Design">
                 </div>
             </div>
             <!-- Card 4 -->
@@ -423,7 +410,7 @@
     </section>
 
     <!-- Process Transition -->
-    <div class="section-transition center no-border">
+    <div class="section-transition right no-border">
         <div class="scroll-down-anim">
             <div class="scroll-arrow">↓</div>
             <div class="scroll-word"><span class="word-inner">SCROLL</span></div>

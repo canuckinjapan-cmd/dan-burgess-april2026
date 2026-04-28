@@ -187,79 +187,159 @@ document.addEventListener('DOMContentLoaded', () => {
     // Recalculate on resize
     window.addEventListener('resize', updateLogoPosition);
 
-    // 3. Portfolio Scale Effect & Services Sticky Scale
-    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    // 3. Portfolio Animation & Services Sticky Scale
+    function initPortfolioAnimation() {
+        const portfolioSection = document.querySelector('.portfolio');
+        const items = document.querySelectorAll('.portfolio-item');
+        if (!portfolioSection || !items.length) return;
+
+        function updatePortfolio() {
+            const rect = portfolioSection.getBoundingClientRect();
+            const scrollHeight = portfolioSection.offsetHeight - window.innerHeight;
+            const scrollTop = Math.min(Math.max(-rect.top, 0), scrollHeight);
+            const progress = scrollTop / scrollHeight;
+
+            // Weights for phases per item
+            const travelWeight = 1.2; // Entry duration (sliding in from bottom)
+            const exitWeight = 1.8;   // Exit duration (sliding up to leave)
+            const pauseWeight = 3.0;  // TOTAL PAUSE DURATION: Increase this to keep the card on screen longer
+            const itemCycle = travelWeight + pauseWeight + exitWeight; // Total duration per item
+            const overlap = 1.0;   // How much the next card's entry overlaps the current card's exit
+            
+            const totalWeight = (items.length * (itemCycle - overlap)) + overlap;
+
+            items.forEach((item, index) => {
+                const startWeight = index * (itemCycle - overlap);
+                const enterStart = startWeight / totalWeight;
+                const enterEnd = (startWeight + travelWeight) / totalWeight;
+                const pauseEnd = (startWeight + travelWeight + pauseWeight) / totalWeight;
+                const exitEnd = (startWeight + travelWeight + pauseWeight + exitWeight) / totalWeight;
+
+                let y = 100; // Start below (100vh)
+                let opacity = 0;
+                let visibility = 'hidden';
+                let imageTranslate = 0; // Internal image transition (0 to -100%)
+
+                if (progress >= enterStart && progress < enterEnd) {
+                    // Entering
+                    const localP = (progress - enterStart) / (enterEnd - enterStart);
+                    const eased = localP < 0.5 ? 4 * localP * localP * localP : 1 - Math.pow(-2 * localP + 2, 3) / 2;
+                    y = 100 - (eased * 100);
+                    opacity = Math.min(1, localP * 2);
+                    visibility = 'visible';
+                } else if (progress >= enterEnd && progress < pauseEnd) {
+                    // Paused at top (y = 0)
+                    y = 0;
+                    opacity = 1;
+                    visibility = 'visible';
+
+                    // INTERNAL IMAGE SLIDE TIMING:
+                    // localPause goes from 0 to 1 during the 'pauseWeight' phase.
+                    const localPause = (progress - enterEnd) / (pauseEnd - enterEnd);
+                    
+                    // (localPause - START_TIME) / SLIDE_DURATION
+                    // Start at 0.1 (10% into pause). 
+                    // Duration 0.4 means it finishes at 0.5 (50% into pause).
+                    // This leaves the remaining 50% of the pause for the SECOND image to stay static.
+                    // Lower the 0.4 to make the slide faster/pause longer.
+                    const imageProgress = Math.max(0, Math.min(1, (localPause - 0.1) / 0.8));
+                    
+                    // Smoother cubic ease-in-out
+                    const easedImage = imageProgress < 0.5 ? 4 * imageProgress * imageProgress * imageProgress : 1 - Math.pow(-2 * imageProgress + 2, 3) / 2;
+                    imageTranslate = easedImage * 100;
+                } else if (progress >= pauseEnd && progress < exitEnd) {
+                    // Exiting
+                    const localExit = (progress - pauseEnd) / (exitEnd - pauseEnd);
+                    // Smoother/slower exit curve
+                    const eased = Math.pow(localExit, 1.2); 
+                    y = 0 - (eased * 120);
+                    opacity = 1 - Math.pow(localExit, 2);
+                    visibility = 'visible';
+                    imageTranslate = 100;
+                } else if (progress >= exitEnd) {
+                    y = -120;
+                    opacity = 0;
+                    visibility = 'hidden';
+                } else {
+                    // Waiting to enter
+                    y = 100;
+                    opacity = 0;
+                    visibility = 'hidden';
+                }
+
+                item.style.transform = `translate3d(0, ${y}vh, 0)`;
+                item.style.opacity = opacity.toString();
+                item.style.visibility = visibility;
+                
+                const wrapper = item.querySelector('.portfolio-image-wrapper');
+                if (wrapper) {
+                    wrapper.style.transform = `translate3d(-${imageTranslate}%, 0, 0)`;
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updatePortfolio);
+        updatePortfolio();
+    }
+    initPortfolioAnimation();
+
     const serviceCards = document.querySelectorAll('.service-card');
 
     function handleScrollEffects() {
-        // Portfolio Scale
-        portfolioItems.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            // When top of item goes above top of viewport
-            if (rect.top < 0) {
-                // Increased scaling effect to appear as moving into the distance
-                const scale = Math.max(0.7, 1 + (rect.top * 0.0006));
-                const opacity = Math.max(0.4, 1 + (rect.top * 0.0008));
-                item.style.transform = `scale(${scale})`;
-                item.style.opacity = opacity.toString();
-            } else {
-                item.style.transform = `scale(1)`;
-                item.style.opacity = '1';
-            }
-        });
-
         // Services Scroll-Linked Animation
         const servicesContainer = document.querySelector('.services-container');
-        if (servicesContainer) {
-            const containerRect = servicesContainer.getBoundingClientRect();
-            // How far from the top of viewport (offset by sticky point)
-            const scrollOffset = -(containerRect.top - 120);
-            const totalHeight = containerRect.height;
+        if (!servicesContainer) return;
+
+        const containerRect = servicesContainer.getBoundingClientRect();
+        // How far from the top of viewport (offset by sticky point)
+        const scrollOffset = -(containerRect.top - 120);
+        
+        // Total window for each card's animation
+        // Using 1.2 * windowHeight to add a "delay" between card animations
+        const stride = window.innerHeight * 1.1; 
+        const activeRange = window.innerHeight * 0.9; // Card slides in during 90% of the stride
+        
+        serviceCards.forEach((card, index) => {
+            // Each card starts its animation sequence at stride * index
+            const start = index * stride;
             
-            // Total window for each card's animation
-            // Using 1.2 * windowHeight to add a "delay" between card animations
-            const stride = window.innerHeight * 1.1; 
-            const activeRange = window.innerHeight * 0.9; // Card slides in during 90% of the stride
+            // Progress of THIS card's slide-in phase (0 to 1)
+            let progress = (scrollOffset - start) / activeRange;
+            progress = Math.max(0, Math.min(1, progress));
             
-            serviceCards.forEach((card, index) => {
-                // Each card starts its animation sequence at stride * index
-                const start = index * stride;
-                
-                // Progress of THIS card's slide-in phase (0 to 1)
-                let progress = (scrollOffset - start) / activeRange;
-                progress = Math.max(0, Math.min(1, progress));
-                
-                // Ease out (deceleration) for a smooth "landing" at the right edge
-                const easedProgress = 1 - Math.pow(1 - progress, 1.6);
-                
-                // 1. Calculate Translate X (-101% to 0%)
-                const translateX = -101 + (easedProgress * 101);
-                
-                // 2. Calculate Opacity
-                const opacity = Math.min(1, progress * 5); // very quick fade in
-                
-                // 3. Calculate Scale (based on NEXT card starting to slide)
-                let scale = 1;
-                if (index < serviceCards.length - 1) {
-                    const nextStart = (index + 1) * stride;
-                    let nextProgress = (scrollOffset - nextStart) / activeRange;
-                    nextProgress = Math.max(0, Math.min(1, nextProgress));
-                    // Scale down to 0.95 as the next card slides in
-                    scale = 1 - (nextProgress * 0.05);
-                }
-                
-                // Apply styles directly
-                card.style.transform = `translate3d(${translateX}%, 0, 0) scale(${scale})`;
-                card.style.opacity = opacity.toString();
-                card.style.zIndex = (index + 10).toString();
-            });
-        }
+            // Ease out (deceleration) for a smooth "landing" at the right edge
+            const easedProgress = 1 - Math.pow(1 - progress, 1.6);
+            
+            // 1. Calculate Translate X (-101% to 0%)
+            const translateX = -101 + (easedProgress * 101);
+            
+            // 2. Calculate Opacity
+            const opacity = Math.min(1, progress * 5); // very quick fade in
+            
+            // 3. Calculate Scale (based on NEXT card starting to slide)
+            let scale = 1;
+            if (index < serviceCards.length - 1) {
+                const nextStart = (index + 1) * stride;
+                let nextProgress = (scrollOffset - nextStart) / activeRange;
+                nextProgress = Math.max(0, Math.min(1, nextProgress));
+                // Scale down to 0.95 as the next card slides in
+                scale = 1 - (nextProgress * 0.05);
+            }
+            
+            // Apply styles directly
+            card.style.transform = `translate3d(${translateX}%, 0, 0) scale(${scale})`;
+            card.style.opacity = opacity.toString();
+            card.style.zIndex = (index + 10).toString();
+        });
     }
 
-    window.addEventListener('scroll', () => {
-        requestAnimationFrame(handleScrollEffects);
-    });
-    handleScrollEffects();
+    const servicesContainer = document.querySelector('.services-container');
+    if (servicesContainer) {
+        window.addEventListener('scroll', () => {
+            requestAnimationFrame(handleScrollEffects);
+        }, { passive: true });
+        handleScrollEffects();
+    }
     // 4. Intersection Observers for Animations (Split Reveal, Stagger Up, Roots Line)
     const animatedElements = document.querySelectorAll('.split-reveal, .stagger-up, .roots-line');
     if (animatedElements.length > 0) {
@@ -523,12 +603,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. About Section Card Stacking Animation
+    // 6. About Section Single Card Sliding Content Animation
     function initAboutCardStacking() {
         const aboutSection = document.querySelector('.about');
-        const aboutCards = document.querySelectorAll('.about-card');
+        const contentStrip = document.querySelector('.about-card-content-strip');
+        const aboutCardMain = document.querySelector('.about-card-main');
         const aboutButton = document.querySelector('.btn-about');
-        if (!aboutSection || !aboutCards.length) return;
+        const segments = document.querySelectorAll('.about-card-segment');
+        
+        if (!aboutSection || !contentStrip || !segments.length) return;
 
         function updateCards() {
             const rect = aboutSection.getBoundingClientRect();
@@ -536,189 +619,72 @@ document.addEventListener('DOMContentLoaded', () => {
             const scrollTop = Math.min(Math.max(-rect.top, 0), scrollHeight);
             const progress = scrollTop / scrollHeight;
 
-            // Get sticky positions from CSS computed styles
-            const cardWrapper = document.querySelector('.about-card-wrapper');
-            const stickyTop = cardWrapper ? parseInt(window.getComputedStyle(cardWrapper).top) : 160;
+            // Discrete phases: Pause1, Slide1-2, Pause2, Slide2-3, Pause3, Exit
+            const numSegments = segments.length;
+            const pauseWeight = 1.5; // Longer pauses for visibility
+            const slideWeight = 0.8; // More intentional slides
+            const exitWeight = 1.0;
             
-            const aboutBtn = document.querySelector('.btn-about');
-            const buttonStickyTop = aboutBtn ? parseInt(window.getComputedStyle(aboutBtn).top) : 80;
+            const totalWeight = (numSegments * pauseWeight) + ((numSegments - 1) * slideWeight) + exitWeight;
 
-            aboutCards.forEach((card, i) => {
-                // We use 5 ranges for 3 cards to create a long "pause" at the end
-                // Range 0: Card 1 active
-                // Range 1: Card 2 slides on top of Card 1
-                // Range 2: Card 3 slides on top of Card 2
-                // Range 3-4: All cards stay in place (pause)
-                const numRanges = aboutCards.length + 2; 
-                const start = i / numRanges;
-                const end = (i + 1) / numRanges;
+            let currentWeight = 0;
+            let translateYStrip = 0;
+            let exitProgress = 0;
 
-                let localProgress = (progress - start) / (end - start);
-                localProgress = Math.min(Math.max(localProgress, 0), 1);
+            for (let i = 0; i < numSegments; i++) {
+                // Pause phase
+                const pStart = currentWeight / totalWeight;
+                const pEnd = (currentWeight + pauseWeight) / totalWeight;
+                if (progress >= pStart && progress < pEnd) {
+                    translateYStrip = i * 100;
+                }
+                if (progress >= pEnd) {
+                    translateYStrip = i * 100;
+                }
+                currentWeight += pauseWeight;
 
-                // 1. Handle Active State (Color Change) and Visibility
-                // Delay the transition to grey: stay white until the next card is 70% over it
-                const nextStart = (i + 1) / numRanges;
-                const colorThreshold = nextStart + (1 / numRanges) * 0.7; 
-                const isLastCard = i === aboutCards.length - 1;
-                
-                if (progress >= start && (isLastCard || progress < colorThreshold)) {
-                    card.classList.add('is-active');
-                    card.classList.remove('is-stacked');
-                    card.style.opacity = "1";
-                    card.style.visibility = "visible";
-                } else if (progress >= colorThreshold) {
-                    // Card is now underneath the next one
-                    card.classList.remove('is-active');
-                    card.classList.add('is-stacked');
-                    
-                    // Fade out completely when the next card is fully there to prevent "peeking"
-                    // We start fading at colorThreshold and finish by the time the next card is fully settled
-                    const fadeOutStart = colorThreshold;
-                    const fadeOutEnd = nextStart + (1 / numRanges); 
-                    
-                    let opacity = 1;
-                    if (progress > fadeOutStart) {
-                        opacity = 1 - (progress - fadeOutStart) / (fadeOutEnd - fadeOutStart);
+                // Slide phase
+                if (i < numSegments - 1) {
+                    const sStart = currentWeight / totalWeight;
+                    const sEnd = (currentWeight + slideWeight) / totalWeight;
+                    if (progress >= sStart && progress < sEnd) {
+                        const localS = (progress - sStart) / (sEnd - sStart);
+                        // Custom ease-in-out
+                        const easedS = localS < 0.5 ? 4 * localS * localS * localS : 1 - Math.pow(-2 * localS + 2, 3) / 2;
+                        translateYStrip = (i * 100) + (easedS * 100);
                     }
-                    card.style.opacity = Math.max(0, opacity).toString();
-                    card.style.visibility = opacity <= 0 ? "hidden" : "visible";
-                } else {
-                    // Card hasn't reached its spot yet
-                    card.classList.remove('is-active');
-                    card.classList.remove('is-stacked');
-                    card.style.opacity = "0";
-                    card.style.visibility = "hidden";
+                    if (progress >= sEnd) {
+                        translateYStrip = (i + 1) * 100;
+                    }
+                    currentWeight += slideWeight;
                 }
+            }
 
-                // 2. Handle Stacking Effect (Scale) and Entry (TranslateY)
-                let ty = 0;
-                let sc = 1;
+            // Exit phase
+            const exitStart = currentWeight / totalWeight;
+            if (progress >= exitStart) {
+                exitProgress = (progress - exitStart) / (exitWeight / totalWeight);
+                translateYStrip = (numSegments - 1) * 100;
+            }
 
-                // Entry animation for cards 2 and 3
-                if (i > 0) {
-                    let entryProgress = (progress - start) / (1 / numRanges);
-                    entryProgress = Math.min(Math.max(entryProgress, 0), 1);
-                    ty = (1 - entryProgress) * 100; // 100vh to 0
+            contentStrip.style.transform = `translate3d(0, -${translateYStrip}%, 0)`;
+
+            if (exitProgress > 0) {
+                const easedExit = Math.pow(exitProgress, 1.5);
+                aboutCardMain.style.transform = `translate3d(0, -${easedExit * 120}vh, 0)`;
+                if (aboutButton) {
+                    aboutButton.style.opacity = Math.max(0, 1 - exitProgress * 3).toString();
                 }
-
-                // Scaling down when covered
-                if (progress >= nextStart && !isLastCard) {
-                    const scaleProgress = Math.min(1, (progress - nextStart) / (1 / numRanges));
-                    sc = 1 - (0.04 * scaleProgress);
-                }
-
-                card.style.transform = `translateY(${ty}vh) scale(${sc})`;
-            });
-
-            // 3. Handle Button Disappearing
-            // Fade out the ABOUT ME button as the last card scrolls up to cover it
-            const lastCard = aboutCards[aboutCards.length - 1];
-            if (lastCard && aboutButton) {
-                const lastRect = lastCard.getBoundingClientRect();
-                if (lastRect.top < stickyTop) {
-                    const fadeStart = stickyTop;
-                    const fadeEnd = buttonStickyTop;
-                    const btnProgress = Math.max(0, Math.min(1, (fadeStart - lastRect.top) / (fadeStart - fadeEnd)));
-                    aboutButton.style.opacity = (1 - btnProgress).toString();
-                    aboutButton.style.visibility = btnProgress >= 1 ? 'hidden' : 'visible';
-                } else {
-                    aboutButton.style.opacity = '1';
-                    aboutButton.style.visibility = 'visible';
-                }
+            } else {
+                aboutCardMain.style.transform = `translate3d(0, 0, 0)`;
+                if (aboutButton) aboutButton.style.opacity = '1';
             }
         }
 
         window.addEventListener('scroll', updateCards);
-        // Initial check
         updateCards();
     }
     initAboutCardStacking();
 
-    // 10. Hero Custom Cursor ("団")
-    const heroCursor = document.getElementById('hero-cursor');
-    const heroSection = document.getElementById('home');
-    const aboutBtn = document.querySelector('.btn-about');
-
-    if (heroCursor && heroSection) {
-        let lastTrailTime = 0;
-        const trailCooldown = 30; // ms (more frequent for denser trail)
-
-        window.addEventListener('mousemove', (e) => {
-            // Disable custom cursor on mobile/tablets (respecting CSS media query threshold)
-            if (window.innerWidth <= 1024) {
-                heroCursor.classList.remove('visible');
-                document.body.classList.remove('hero-cursor-area');
-                return;
-            }
-
-            const x = e.clientX;
-            const y = e.clientY;
-            
-            heroCursor.style.left = `${x}px`;
-            heroCursor.style.top = `${y}px`;
-
-            const aboutBtnRect = aboutBtn ? aboutBtn.getBoundingClientRect() : null;
-            
-            let showCursor = false;
-            
-            // Condition: cursor is visible if hero is partially in view 
-            // AND the mouse is above the About Me button's bottom edge
-            if (aboutBtnRect) {
-                // Check if hero is still in view (rect.bottom > 0)
-                const heroRect = heroSection.getBoundingClientRect();
-                
-                // Also check if we are hovering over a link or button
-                const isHoveringInteractive = e.target.closest('a, button, .portfolio-item');
-                
-                if (heroRect.bottom > 0 && y < aboutBtnRect.bottom && !isHoveringInteractive) {
-                    showCursor = true;
-                }
-            }
-
-            if (showCursor) {
-                heroCursor.classList.add('visible');
-                document.body.classList.add('hero-cursor-area');
-
-                // Create trail
-                const now = Date.now();
-                if (now - lastTrailTime > trailCooldown) {
-                    createTrail(x, y);
-                    lastTrailTime = now;
-                }
-            } else {
-                heroCursor.classList.remove('visible');
-                document.body.classList.remove('hero-cursor-area');
-            }
-        });
-
-        function createTrail(x, y) {
-            const trail = document.createElement('div');
-            trail.className = 'hero-cursor-trail';
-            trail.textContent = '団';
-            trail.style.left = `${x}px`;
-            trail.style.top = `${y}px`;
-            trail.style.opacity = '0.5'; // Start semi-visible
-            document.body.appendChild(trail);
-
-            // Animate trail
-            setTimeout(() => {
-                trail.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-                trail.style.opacity = '0';
-                trail.style.transform = 'translate(-50%, -50%) scale(0.9)';
-            }, 10);
-
-            // Remove trail
-            setTimeout(() => {
-                document.body.removeChild(trail);
-            }, 1000);
-        }
-
-        // Hide cursor when leaving window
-        window.addEventListener('mouseout', () => {
-            heroCursor.classList.remove('visible');
-            document.body.classList.remove('hero-cursor-area');
-        });
-    }
 });
 

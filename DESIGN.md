@@ -9,8 +9,9 @@ The aesthetic is clean, authoritative, and tactile. It uses bold grids and massi
 | :--- | :--- | :--- |
 | `--color-bg` | `#eff0f2` | Core background color. |
 | `--color-text` | `#111111` | Primary typography and lines. |
-| `--color-orange` | `#f27d26` | CTA highlights, bullet points, and the custom cursor character. |
+| `--color-orange` | `#f27d26` | CTA highlights and bullet points. |
 | `--color-white` | `#ffffff` | High-contrast backgrounds (footer, process section). |
+| `--color-border` | `#646464` | Primary border color for cards. |
 | **Texture** | `rice-paper-2.png` | Global overlay at 5-10% opacity for tactile depth. |
 
 ## Typography
@@ -18,13 +19,15 @@ The aesthetic is clean, authoritative, and tactile. It uses bold grids and massi
 | :--- | :--- | :--- | :--- |
 | **Display** | `Archivo` | 900 | High-impact headers, section titles. Use negative letter-spacing (e.g., `-0.07em`) for a modern, tight feel. |
 | **Body** | `Source Sans 3` | 400, 600 | General reading and interface text. Use `clamp()` for fluid responsive scaling. |
-| **Serif** | `Playfair Display`| 400 | Artistic subtitles and highlight quotes. |
-| **Custom/JA** | `Zen Maru Gothic` | 500 | Hero cursor, Favicon, and Japanese branding. |
+| **Serif** | `Archivo`| 400 | Artistic subtitles and highlight quotes. |
+| **Custom/JA** | `Zen Maru Gothic` | 500 | Favicon and Japanese branding. |
 | **Standard JA** | `Noto Sans JP` | 400, 500 | General Japanese body text. |
 
 ## 📐 Spacing & Rhythm
 - **Base Section Padding**: `100px 40px` (Desktop).
-- **Radius**: `20px` for large cards; `4px` for small UI elements.
+- **Radius**: `0px` for all primary cards (Sharp corners).
+- **Borders**: `1.583333px solid var(--color-border)` (precision-aligned with About Me section).
+- **Transitions**: Right-aligned "Scroll Down" indicators for section breaks.
 - **Glassmorphism**: `backdrop-filter: blur(10px)` with `rgba(255, 255, 255, 0.8)` for headers.
 
 ## 🎞️ Component Patterns
@@ -35,8 +38,9 @@ The aesthetic is clean, authoritative, and tactile. It uses bold grids and massi
 - **Typography**: Bullet points increased to `25px` for readability.
 
 ### 2. Portfolio Items
-- **Slideshows**: Must loop seamlessly. Images enter from LEFT and exit to RIGHT.
-- **Captions**: Floating dark overlays with semi-transparent backgrounds.
+- **Motion**: Scroll-linked items that slide into view, pause, and then slide out.
+- **Image Behavior**: Dual-image layout where the second image slides in from the right *during* the pause phase (triggered at ~10% into the pause duration).
+- **Hierarchy**: Staggered opacity and Y-translation to create depth during section transitions.
 
 ### 3. Marquee (Footer)
 - **Scale**: `clamp(36px, 10vw, 70px)`.
@@ -46,10 +50,10 @@ The aesthetic is clean, authoritative, and tactile. It uses bold grids and massi
 ## 🏗️ Motion & Physics
 - **Entrance**: Blur-reveal (`filter: blur(10px) -> 0`) for titles.
 - **Ripple**: Vertical movement of `-8px` with a staggered `0.1s` delay.
-- **Cursor Trail**: Large `46px` text with `filter: blur(5px)` and `0.7` opacity to suggest light and shadow movement.
+
 
 ## 📱 Responsive Strategy
 - **Breakpoints**: 
   - Desktop: 1025px+
   - Tablet/Mobile: $\leq$ 1024px.
-- **Adaptation**: Custom cursors and hover-heavy animations are disabled on touch-enabled breakpoints to preserve performance and standard UX.
+- **Adaptation**: Hover-heavy animations are disabled on touch-enabled breakpoints to preserve performance and standard UX.
