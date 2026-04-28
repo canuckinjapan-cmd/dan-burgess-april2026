@@ -5,190 +5,184 @@ function initApp() {
 
     // 2. Floating Logo Animation
     const floatingLogo = document.getElementById('floating-logo');
-    if (!floatingLogo) return; // Prevent errors if elements aren't ready
-    
-    const secondaryLogo = document.getElementById('secondary-logo');
-    const heroTarget = document.querySelector('.hero-logo-target');
-    const headerTarget = document.querySelector('.header-logo-target');
-    const textDanburgess = floatingLogo.querySelector('.text-danburgess');
-    const textDesign = floatingLogo.querySelector('.text-design');
-    const textDesignMask = floatingLogo.querySelector('.text-design-mask');
-    const logoImg = floatingLogo.querySelector('.logo-img');
-    const logoText = floatingLogo.querySelector('.logo-text');
+    if (floatingLogo) {
+        const secondaryLogo = document.getElementById('secondary-logo');
+        const heroTarget = document.querySelector('.hero-logo-target');
+        const headerTarget = document.querySelector('.header-logo-target');
+        const textDanburgess = floatingLogo.querySelector('.text-danburgess');
+        const textDesign = floatingLogo.querySelector('.text-design');
+        const textDesignMask = floatingLogo.querySelector('.text-design-mask');
+        const logoImg = floatingLogo.querySelector('.logo-img');
+        const logoText = floatingLogo.querySelector('.logo-text');
 
-    function updateLogoPosition() {
-        if (!heroTarget || !headerTarget) return;
+        function updateLogoPosition() {
+            if (!heroTarget || !headerTarget) return;
 
-        const isJapanese = document.documentElement.lang === 'ja';
-        const isMobilePortrait = window.innerWidth <= 600 && window.innerHeight >= window.innerWidth;
-        const isTabletPortrait = window.innerWidth > 600 && window.innerWidth <= 1024 && window.innerHeight >= window.innerWidth;
-        const isMobileLandscape = window.innerHeight <= 500 && window.innerWidth > window.innerHeight;
-        const isMobile = window.innerWidth <= 768 || isMobileLandscape;
-        const scrollY = window.scrollY;
+            const isJapanese = document.documentElement.lang === 'ja';
+            const isMobilePortrait = window.innerWidth <= 600 && window.innerHeight >= window.innerWidth;
+            const isTabletPortrait = window.innerWidth > 600 && window.innerWidth <= 1024 && window.innerHeight >= window.innerWidth;
+            const isMobileLandscape = window.innerHeight <= 500 && window.innerWidth > window.innerHeight;
+            const isMobile = window.innerWidth <= 768 || isMobileLandscape;
+            const scrollY = window.scrollY;
 
-        // Secondary logo animation (opposite language)
-        if (secondaryLogo) {
-            // Slide off quickly as we scroll
-            const slideProgress = Math.min(scrollY / 200, 1);
-            secondaryLogo.style.transform = `translateX(${-120 * slideProgress}%)`;
-            secondaryLogo.style.opacity = 1 - slideProgress;
-        }
-
-        // Adjust this value to change how far you need to scroll before the animation completes.
-        // A larger number means the animation takes longer to finish (slower).
-        const maxScroll = 400;
-
-        let linearProgress = Math.min(scrollY / maxScroll, 1);
-
-        // Easing function to make the animation start and end smoothly.
-        // Currently using a standard "ease-in-out" sine curve.
-        // For a more dramatic ease, you could try: let progress = Math.pow(linearProgress, 2) * (3 - 2 * linearProgress);
-        // Or for a simple linear animation (no easing): let progress = linearProgress;
-        let progress = Math.pow(linearProgress, 2) * (3 - 2 * linearProgress);
-
-        const heroRect = heroTarget.getBoundingClientRect();
-        const headerRect = headerTarget.getBoundingClientRect();
-
-        // Hero state
-        let heroLogoSize = 240;
-        let heroLogoOffsetY = 0; // Align top of logo with top of text
-        let heroFontSizeDan = 96;
-        let heroFontSizeDesign = 180;
-        let heroDesignY = 76;
-
-        if (isJapanese) {
-            heroFontSizeDan = 96;
-            heroFontSizeDesign = 164; // Reduced from 168 to match ダンバージェス width
-            heroDesignY = 85;
-        }
-
-        if (isMobilePortrait) {
-            heroLogoSize = 0; // Hide logo in portrait
-            heroLogoOffsetY = 0;
-            if (isJapanese) {
-                heroFontSizeDan = 49;
-                heroFontSizeDesign = 83; // Reduced from 86
-                heroDesignY = 48;
-            } else {
-                heroFontSizeDan = 49;
-                heroFontSizeDesign = 93;
-                heroDesignY = 45;
+            // Secondary logo animation (opposite language)
+            if (secondaryLogo) {
+                // Slide off quickly as we scroll
+                const slideProgress = Math.min(scrollY / 200, 1);
+                secondaryLogo.style.transform = `translateX(${-120 * slideProgress}%)`;
+                secondaryLogo.style.opacity = 1 - slideProgress;
             }
-        } else if (isTabletPortrait) {
-            heroLogoSize = 150;
-            heroLogoOffsetY = 0;
+
+            // Adjust this value to change how far you need to scroll before the animation completes.
+            // A larger number means the animation takes longer to finish (slower).
+            const maxScroll = 400;
+
+            let linearProgress = Math.min(scrollY / maxScroll, 1);
+
+            // Easing function to make the animation start and end smoothly.
+            let progress = Math.pow(linearProgress, 2) * (3 - 2 * linearProgress);
+
+            const heroRect = heroTarget.getBoundingClientRect();
+            const headerRect = headerTarget.getBoundingClientRect();
+
+            // Hero state
+            let heroLogoSize = 240;
+            let heroLogoOffsetY = 0; // Align top of logo with top of text
+            let heroFontSizeDan = 96;
+            let heroFontSizeDesign = 180;
+            let heroDesignY = 76;
+
             if (isJapanese) {
-                heroFontSizeDan = 60;
-                heroFontSizeDesign = 101; // Reduced from 105
-                heroDesignY = 60;
-            } else {
-                heroFontSizeDan = 60;
-                heroFontSizeDesign = 112;
-                heroDesignY = 55;
+                heroFontSizeDan = 96;
+                heroFontSizeDesign = 164; 
+                heroDesignY = 85;
             }
-        } else if (isMobileLandscape) {
-            heroLogoSize = 125; // Adjust logo size for mobile landscape here
-            heroLogoOffsetY = 10; // Adjust vertical position for mobile landscape here
-            if (isJapanese) {
-                heroFontSizeDan = 49;
-                heroFontSizeDesign = 83; // Reduced from 86
-                heroDesignY = 48;
-            } else {
-                heroFontSizeDan = 49;
-                heroFontSizeDesign = 93;
-                heroDesignY = 45;
+
+            if (isMobilePortrait) {
+                heroLogoSize = 0; // Hide logo in portrait
+                heroLogoOffsetY = 0;
+                if (isJapanese) {
+                    heroFontSizeDan = 49;
+                    heroFontSizeDesign = 83; 
+                    heroDesignY = 48;
+                } else {
+                    heroFontSizeDan = 49;
+                    heroFontSizeDesign = 93;
+                    heroDesignY = 45;
+                }
+            } else if (isTabletPortrait) {
+                heroLogoSize = 150;
+                heroLogoOffsetY = 0;
+                if (isJapanese) {
+                    heroFontSizeDan = 60;
+                    heroFontSizeDesign = 101; 
+                    heroDesignY = 60;
+                } else {
+                    heroFontSizeDan = 60;
+                    heroFontSizeDesign = 112;
+                    heroDesignY = 55;
+                }
+            } else if (isMobileLandscape) {
+                heroLogoSize = 125; 
+                heroLogoOffsetY = 10; 
+                if (isJapanese) {
+                    heroFontSizeDan = 49;
+                    heroFontSizeDesign = 83; 
+                    heroDesignY = 48;
+                } else {
+                    heroFontSizeDan = 49;
+                    heroFontSizeDesign = 93;
+                    heroDesignY = 45;
+                }
             }
+            const heroDesignX = 0;
+
+            // Header state
+            let headerLogoSize = 40;
+            const headerLogoOffsetY = 0;
+            let headerFontSize = 28.8; // 24 * 1.2
+            const headerDesignY = 0;
+
+            if (isMobilePortrait || isTabletPortrait) {
+                headerLogoSize = 30;
+                headerFontSize = 24.48;
+            }
+
+            // Interpolate sizes first so we can measure width
+            const currentLogoSize = heroLogoSize - (heroLogoSize - headerLogoSize) * progress;
+            const currentLogoOffsetY = heroLogoOffsetY - (heroLogoOffsetY - headerLogoOffsetY) * progress;
+            const currentFontSizeDan = heroFontSizeDan - (heroFontSizeDan - headerFontSize) * progress;
+            const currentFontSizeDesign = heroFontSizeDesign - (heroFontSizeDesign - headerFontSize) * progress;
+
+            logoImg.style.width = `${currentLogoSize}px`;
+            logoImg.style.height = `${currentLogoSize}px`;
+            logoImg.style.transform = `translateY(${currentLogoOffsetY}px)`;
+            logoImg.style.opacity = isMobilePortrait && progress < 0.1 ? 0 : 1;
+            logoImg.style.display = isMobilePortrait && progress === 0 ? 'none' : 'block';
+
+            textDanburgess.style.fontSize = `${currentFontSizeDan}px`;
+            textDesign.style.fontSize = `${currentFontSizeDesign}px`;
+
+            // Measure danWidth for X translation
+            const danWidth = textDanburgess.offsetWidth;
+            const headerDesignX = danWidth;
+
+            const currentDesignY = heroDesignY - (heroDesignY - headerDesignY) * progress;
+            const currentDesignX = heroDesignX - (heroDesignX - headerDesignX) * progress;
+            
+            if (textDesignMask) {
+                textDesignMask.style.transform = `translate(${currentDesignX}px, ${currentDesignY}px)`;
+                textDesign.style.transform = 'none';
+            } else {
+                textDesign.style.transform = `translate(${currentDesignX}px, ${currentDesignY}px)`;
+            }
+
+            const heroTextHeight = heroDesignY + heroFontSizeDesign * 1.1; 
+            const headerTextHeight = headerFontSize;
+            const currentTextHeight = heroTextHeight - (heroTextHeight - headerTextHeight) * progress;
+
+            if (logoText) {
+                logoText.style.height = `${currentTextHeight}px`;
+                logoText.style.width = `${Math.max(danWidth, textDesign.offsetWidth)}px`;
+            }
+
+            const totalHeroWidth = heroLogoSize + (isMobilePortrait ? 0 : 20) + Math.max(danWidth, textDesign.offsetWidth);
+
+            const heroX = heroRect.left + (heroRect.width / 2) - (totalHeroWidth / 2);
+            const heroY = heroRect.top + scrollY + (heroRect.height / 2) - (Math.max(currentLogoSize, currentTextHeight) / 2);
+
+            const headerX = headerRect.left;
+            const headerY = headerRect.top + scrollY;
+
+            const currentX = heroX - (heroX - headerX) * progress;
+            const currentY = (heroY - scrollY) - ((heroY - scrollY) - headerRect.top) * progress;
+
+            floatingLogo.style.left = `${currentX}px`;
+            floatingLogo.style.top = `${currentY}px`;
+
+            const startGap = isMobilePortrait ? 0 : 20;
+            const endGap = isMobilePortrait ? 4 : 10;
+            const currentGap = startGap - (startGap - endGap) * progress;
+            floatingLogo.style.gap = `${currentGap}px`;
         }
-        const heroDesignX = 0;
 
-        // Header state
-        let headerLogoSize = 40;
-        const headerLogoOffsetY = 0;
-        let headerFontSize = 28.8; // 24 * 1.2
-        const headerDesignY = 0;
-
-        if (isMobilePortrait || isTabletPortrait) {
-            headerLogoSize = 30;
-            headerFontSize = 24.48;
-        }
-
-        // Interpolate sizes first so we can measure width
-        const currentLogoSize = heroLogoSize - (heroLogoSize - headerLogoSize) * progress;
-        const currentLogoOffsetY = heroLogoOffsetY - (heroLogoOffsetY - headerLogoOffsetY) * progress;
-        const currentFontSizeDan = heroFontSizeDan - (heroFontSizeDan - headerFontSize) * progress;
-        const currentFontSizeDesign = heroFontSizeDesign - (heroFontSizeDesign - headerFontSize) * progress;
-
-        logoImg.style.width = `${currentLogoSize}px`;
-        logoImg.style.height = `${currentLogoSize}px`;
-        logoImg.style.transform = `translateY(${currentLogoOffsetY}px)`;
-        logoImg.style.opacity = isMobilePortrait && progress < 0.1 ? 0 : 1;
-        logoImg.style.display = isMobilePortrait && progress === 0 ? 'none' : 'block';
-
-        textDanburgess.style.fontSize = `${currentFontSizeDan}px`;
-        textDesign.style.fontSize = `${currentFontSizeDesign}px`;
-
-        // Measure danWidth for X translation
-        const danWidth = textDanburgess.offsetWidth;
-        const headerDesignX = danWidth;
-
-        const currentDesignY = heroDesignY - (heroDesignY - headerDesignY) * progress;
-        const currentDesignX = heroDesignX - (heroDesignX - headerDesignX) * progress;
-        
-        if (textDesignMask) {
-            textDesignMask.style.transform = `translate(${currentDesignX}px, ${currentDesignY}px)`;
-            textDesign.style.transform = 'none';
-        } else {
-            textDesign.style.transform = `translate(${currentDesignX}px, ${currentDesignY}px)`;
-        }
-
-        // Calculate text block height for perfect vertical centering
-        const heroTextHeight = heroDesignY + heroFontSizeDesign * 1.1; // Increased from 0.72 to prevent clipping
-        const headerTextHeight = headerFontSize;
-        const currentTextHeight = heroTextHeight - (heroTextHeight - headerTextHeight) * progress;
-
-        // Set logoText height so it centers properly with the logo
-        if (logoText) {
-            logoText.style.height = `${currentTextHeight}px`;
-            logoText.style.width = `${Math.max(danWidth, textDesign.offsetWidth)}px`;
-        }
-
-        // Calculate total width of the logo block for centering in hero
-        const totalHeroWidth = heroLogoSize + (isMobilePortrait ? 0 : 20) + Math.max(danWidth, textDesign.offsetWidth);
-
-        const heroX = heroRect.left + (heroRect.width / 2) - (totalHeroWidth / 2);
-        const heroY = heroRect.top + scrollY + (heroRect.height / 2) - (Math.max(currentLogoSize, currentTextHeight) / 2);
-
-        const headerX = headerRect.left;
-        const headerY = headerRect.top + scrollY;
-
-        const currentX = heroX - (heroX - headerX) * progress;
-        const currentY = (heroY - scrollY) - ((heroY - scrollY) - headerRect.top) * progress;
-
-        floatingLogo.style.left = `${currentX}px`;
-        floatingLogo.style.top = `${currentY}px`;
-
-        const startGap = isMobilePortrait ? 0 : 20;
-        const endGap = isMobilePortrait ? 4 : 10;
-        const currentGap = startGap - (startGap - endGap) * progress;
-        floatingLogo.style.gap = `${currentGap}px`;
-    }
-
-    window.addEventListener('scroll', () => {
-        requestAnimationFrame(updateLogoPosition);
-    });
-
-    // Initial call
-    updateLogoPosition();
-
-    // After entry animation is done, allow overflow for scroll
-    setTimeout(() => {
-        document.querySelectorAll('.hero-entry-mask').forEach(mask => {
-            mask.classList.add('animation-finished');
+        window.addEventListener('scroll', () => {
+            requestAnimationFrame(updateLogoPosition);
         });
-    }, 2500);
 
-    // Recalculate on resize
-    window.addEventListener('resize', updateLogoPosition);
+        // Initial call
+        updateLogoPosition();
+
+        // Recalculate on resize
+        window.addEventListener('resize', updateLogoPosition);
+
+        // After entry animation is done, allow overflow for scroll
+        setTimeout(() => {
+            document.querySelectorAll('.hero-entry-mask').forEach(mask => {
+                mask.classList.add('animation-finished');
+            });
+        }, 2500);
+    }
 
     // 3. Portfolio Animation & Services Sticky Scale
     function initPortfolioAnimation() {
