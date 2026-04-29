@@ -39,11 +39,10 @@
     --color-bg: #eff0f2;
     --color-text: #111111;
     --color-orange: #f27d26;
-    /* Adjusted to match reference */
     --color-white: #ffffff;
     --font-display: 'Archivo', sans-serif;
     --font-body: 'Source Sans 3', sans-serif;
-    --font-serif: 'Archivo', sans-serif;
+    --font-serif: 'Playfair Display', serif;
     --font-ja: 'Noto Sans JP', sans-serif;
     --header-height: 60px;
 }
@@ -317,7 +316,7 @@ h6,
 }
 
 .hero-intro {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 32px;
     font-weight: 600;
     line-height: 1.4;
@@ -381,7 +380,8 @@ html[lang="ja"] .ca-red {
 }
 
 .btn-neon::before,
-.btn-submit::before {
+.btn-submit::before,
+.back-to-top::before {
     content: '';
     position: absolute;
     top: -50%;
@@ -395,7 +395,8 @@ html[lang="ja"] .ca-red {
 }
 
 .btn-neon::after,
-.btn-submit::after {
+.btn-submit::after,
+.back-to-top::after {
     content: '';
     position: absolute;
     top: 1.5px;
@@ -409,6 +410,10 @@ html[lang="ja"] .ca-red {
 
 .btn-submit::after {
     border-radius: 997.5px;
+}
+
+.back-to-top::after {
+    border-radius: 50%;
 }
 
 .btn-neon:hover,
@@ -514,7 +519,7 @@ html[lang="ja"] .ca-red {
     border: 1.583333px solid #646464;
     border-radius: 0px;
     overflow: hidden;
-    height: 400px; /* Reduced height */
+    height: 440px; /* Increased slightly from 400px to accommodate larger desktop pulse */
     display: flex;
     flex-direction: column;
     opacity: 0;
@@ -526,6 +531,20 @@ html[lang="ja"] .ca-red {
 .about-card.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+@media (hover: hover) {
+    .about-card {
+        transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                    box-shadow 0.6s ease, 
+                    opacity 1.2s ease;
+    }
+
+    .about-card.visible:hover {
+        transform: translateY(-10px) scale(1.015);
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+    }
 }
 
 .about-card-bg {
@@ -554,7 +573,7 @@ html[lang="ja"] .ca-red {
 .about-card-content {
     position: relative;
     z-index: 1;
-    padding: 40px 32px;
+    padding: 48px 40px; /* Reduced side padding slightly */
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -562,48 +581,60 @@ html[lang="ja"] .ca-red {
 
 .about-card-content h3 {
     font-family: var(--font-display);
-    font-size: 36px; /* Increased for desktop */
+    font-size: 38px; /* Slightly larger for desktop */
     margin-bottom: 24px;
     color: #111;
 }
 
 .about-card-content p {
-    font-size: 20px;
+    font-size: 22px; /* Increased for desktop per request */
     line-height: 1.6;
     color: #444;
 }
 
 @media (max-width: 1023px) {
     .about {
-        padding: 60px 20px;
+        padding: 80px 24px; /* Slightly less padding */
     }
     .about-card {
         height: auto;
-        min-height: 320px;
+        min-height: 380px;
     }
     .about-card-content {
-        padding: 40px 30px;
+        padding: 48px 36px;
     }
     .about-card-content h3 {
-        font-size: 36px;
+        font-size: 40px; /* Increased for tablet portrait */
     }
     .about-card-content p {
-        font-size: 20px;
+        font-size: 24px; /* Increased for tablet portrait */
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 767px) {
+    .about {
+        padding: 60px 16px !important; /* Decrease margin size on mobile */
+    }
     .about-card {
-        min-height: 260px;
+        min-height: 280px !important; /* Reduced card height even more */
+        height: auto !important;
     }
     .about-card-content {
-        padding: 24px 20px;
+        padding: 20px 16px !important; /* Much tighter padding for mobile */
+        width: 100% !important;
     }
     .about-card-content h3 {
-        font-size: 32px;
+        font-size: 32px !important; /* Mobile title size */
+        margin-bottom: 12px !important;
     }
     .about-card-content p {
-        font-size: 19px;
+        font-size: 20px !important; /* Mobile body size - 34px was likely too large for the container */
+        line-height: 1.4 !important;
+        width: 100% !important;
+    }
+    /* Adjust gradation on mobile so it doesn't crowd the text */
+    .about-card-bg::after {
+        background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 60%, rgba(255,255,255,0) 100%) !important;
     }
 }
 
@@ -728,21 +759,6 @@ html[lang="ja"] .ca-red {
     }
 }
 
-/* Ripple Animation for "Click" */
-.ripple-letter {
-    display: inline-block;
-    animation: ripple-move 2.5s infinite ease-out;
-}
-
-@keyframes ripple-move {
-    0%, 20%, 100% {
-        transform: translateY(0);
-    }
-    10% {
-        transform: translateY(-8px);
-    }
-}
-
 .portfolio-stack {
     position: absolute;
     top: 0;
@@ -798,11 +814,6 @@ html[lang="ja"] .ca-red {
     object-fit: cover;
     object-position: top left;
     position: relative !important;
-}
-
-/* Remove CSS animations as we'll sync with scroll */
-.main-image,
-.overlay-image {
     animation: none !important;
 }
 
@@ -965,7 +976,7 @@ html[lang="ja"] .ca-red {
 }
 
 .process-subtitle {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 32px;
     font-weight: 400;
     margin-bottom: 80px;
@@ -1300,31 +1311,6 @@ html[lang="ja"] .ca-red {
     overflow: hidden;
 }
 
-.back-to-top::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(transparent, #fff, transparent 30%);
-    z-index: -2;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.back-to-top::after {
-    content: '';
-    position: absolute;
-    top: 1.5px;
-    left: 1.5px;
-    right: 1.5px;
-    bottom: 1.5px;
-    background: var(--color-orange);
-    border-radius: 50%;
-    z-index: -1;
-}
-
 .back-to-top:hover {
     box-shadow: 0 0 20px rgba(242, 125, 38, 0.8);
     transform: translateY(-2px);
@@ -1645,13 +1631,13 @@ html[lang="ja"] .ca-red {
     }
 
     .portfolio {
-        padding: 40px 10px 0;
+        padding: 60px 10px;
         height: 600vh !important;
     }
 
     .portfolio-item {
         height: 80vh;
-        top: 80px; /* Aligned with design services card position */
+        top: 80px;
         border-radius: 0px;
         border: 1.583333px solid #646464;
     }
@@ -1672,11 +1658,6 @@ html[lang="ja"] .ca-red {
         display: none;
     }
 
-    /* SELECTED WORK images */
-    .portfolio {
-        padding: 60px 10px;
-    }
-
     .portfolio-stack {
         gap: 30px;
     }
@@ -1686,6 +1667,13 @@ html[lang="ja"] .ca-red {
         width: 100%;
         height: 100%;
     }
+
+    /* Animation scaling for mobile */
+    .brand-danburgess { font-size: 40px; }
+    .brand-design { font-size: 80px; margin-top: -10px; }
+    .logo-wrapper { width: 100px; height: 100px; }
+    .split-slide-container .motion-container { gap: 15px; }
+    .blur-phrase { font-size: 0.7rem; padding: 0 20px; }
 
     /* DESIGN SERVICES */
     .services {
@@ -1929,7 +1917,6 @@ html[lang="ja"] .ca-red {
     }
 }
 
-/* Hide SNS text on portrait tablets and mobile */
 @media (max-width: 1024px) and (orientation: portrait) {
     .sns-text {
         display: none;
@@ -1946,34 +1933,29 @@ html[lang="ja"] .ca-red {
     .footer {
         padding: 15px 16px 25px;
     }
-}
 
-/* Tablet Portrait Hero Adjustments */
-@media (max-width: 1024px) and (orientation: portrait) {
     .hero {
         min-height: auto !important;
         padding-top: calc(var(--header-height) + 30px);
         padding-bottom: 30px;
-        /* Match landscape */
     }
 
     .hero-logo-target {
         height: 100px;
         margin-bottom: 60px;
-        /* Match landscape */
     }
 
     .hero-intro {
         margin-bottom: 20px;
-        /* Match landscape */
-    }
-
-    .about {
-        padding-top: 30px;
     }
 
     .btn-about {
         margin-bottom: 40px;
+    }
+
+    .kanji-marquee-vertical span {
+        font-size: 60px;
+        right: 10px;
     }
 }
 
@@ -2002,15 +1984,8 @@ html[lang="ja"] .ca-red {
 }
 
 @keyframes bg-shift {
-
-    0%,
-    100% {
-        background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%);
-    }
-
-    50% {
-        background: radial-gradient(circle at 50% 50%, #2a1a10 0%, #0a0a0a 100%);
-    }
+    0%, 100% { background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%); }
+    50% { background: radial-gradient(circle at 50% 50%, #2a1a10 0%, #0a0a0a 100%); }
 }
 
 /* Kanji Vertical Marquee */
@@ -2023,7 +1998,6 @@ html[lang="ja"] .ca-red {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Center icons/text in the column */
     z-index: 2;
     pointer-events: none;
     white-space: nowrap;
@@ -2032,25 +2006,16 @@ html[lang="ja"] .ca-red {
 
 .kanji-marquee-vertical span {
     font-size: 100px;
-    /* Slightly smaller base size */
     font-family: var(--font-display);
     font-weight: 900;
     color: rgba(255, 255, 255, 0.18);
-    /* Brighter (0.03 + 0.15) */
     line-height: 1.5;
     animation: kanji-marquee-down 5s linear infinite;
-    /* 50% faster than 8s */
 }
 
 @keyframes kanji-marquee-down {
-    0% {
-        transform: translateY(-50%);
-    }
-
-    /* Adjust start for smoother loop with more items */
-    100% {
-        transform: translateY(0);
-    }
+    0% { transform: translateY(-50%); }
+    100% { transform: translateY(0); }
 }
 
 /* Split-Text Slide Container */
@@ -2069,14 +2034,11 @@ html[lang="ja"] .ca-red {
     display: flex;
     align-items: center;
     gap: 30px;
-    /* Reduced gap to prevent clipping */
     transform: scale(0.75);
-    /* Slightly smaller base scale */
 }
 
 .logo-wrapper {
     width: 200px;
-    /* Smaller base size */
     height: 200px;
     opacity: 0;
     filter: blur(10px);
@@ -2084,31 +2046,10 @@ html[lang="ja"] .ca-red {
 }
 
 @keyframes logo-blur-reveal {
-    0% {
-        opacity: 0;
-        filter: blur(10px);
-        transform: scale(1);
-    }
-
-    15% {
-        opacity: 1;
-        filter: blur(0);
-        transform: scale(1);
-    }
-
-    25%,
-    55% {
-        opacity: 1;
-        filter: blur(0);
-        transform: scale(1);
-    }
-
-    85%,
-    100% {
-        opacity: 0;
-        transform: scale(0);
-        filter: blur(5px);
-    }
+    0% { opacity: 0; filter: blur(10px); transform: scale(1); }
+    15% { opacity: 1; filter: blur(0); transform: scale(1); }
+    25%, 55% { opacity: 1; filter: blur(0); transform: scale(1); }
+    85%, 100% { opacity: 0; transform: scale(0); filter: blur(5px); }
 }
 
 .brand-logo {
@@ -2126,7 +2067,6 @@ html[lang="ja"] .ca-red {
 
 .brand-danburgess {
     font-size: 80px;
-    /* Slightly smaller base size */
     font-weight: 900;
     line-height: 1;
     letter-spacing: -0.07em;
@@ -2135,39 +2075,17 @@ html[lang="ja"] .ca-red {
 }
 
 @keyframes danburgess-slide-across {
-    0% {
-        transform: translateX(-500%) scale(1);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    25%,
-    55% {
-        transform: translateX(0) translateY(0) scale(1);
-        opacity: 1;
-    }
-
-    85%,
-    100% {
-        transform: translateY(-500%) scale(8);
-        opacity: 0;
-    }
+    0% { transform: translateX(-500%) scale(1); opacity: 0; }
+    10% { opacity: 1; }
+    25%, 55% { transform: translateX(0) translateY(0) scale(1); opacity: 1; }
+    85%, 100% { transform: translateY(-500%) scale(8); opacity: 0; }
 }
 
-.brand-danburgess .text-dan {
-    color: #fff;
-}
-
-.brand-danburgess .text-burgess {
-    color: var(--color-orange);
-}
+.brand-danburgess .text-dan { color: #fff; }
+.brand-danburgess .text-burgess { color: var(--color-orange); }
 
 .brand-design {
     font-size: 150px;
-    /* Slightly smaller base size */
     font-weight: 900;
     line-height: 1;
     letter-spacing: -0.09em;
@@ -2178,26 +2096,10 @@ html[lang="ja"] .ca-red {
 }
 
 @keyframes design-slide-across {
-    0% {
-        transform: translateX(500%) scale(1);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    25%,
-    55% {
-        transform: translateX(0) translateY(0) scale(1);
-        opacity: 1;
-    }
-
-    85%,
-    100% {
-        transform: translateY(500%) scale(8);
-        opacity: 0;
-    }
+    0% { transform: translateX(500%) scale(1); opacity: 0; }
+    10% { opacity: 1; }
+    25%, 55% { transform: translateX(0) translateY(0) scale(1); opacity: 1; }
+    85%, 100% { transform: translateY(500%) scale(8); opacity: 0; }
 }
 
 /* Blur Reveal Phrases */
@@ -2215,7 +2117,6 @@ html[lang="ja"] .ca-red {
     text-align: center;
     font-family: var(--font-display);
     font-size: clamp(0.6rem, 1.5vw, 1.25rem);
-    /* Reduced by 50% */
     font-weight: 800;
     color: var(--color-orange);
     text-transform: uppercase;
@@ -2225,47 +2126,15 @@ html[lang="ja"] .ca-red {
     animation: blur-reveal-anim 10s infinite;
 }
 
-.p1 {
-    top: 15%;
-    animation-delay: 0s;
-}
-
-.p2 {
-    bottom: 15%;
-    animation-delay: 2.5s;
-}
-
-.p3 {
-    top: 20%;
-    animation-delay: 5s;
-}
-
-.p4 {
-    bottom: 20%;
-    animation-delay: 7.5s;
-}
+.p1 { top: 15%; animation-delay: 0s; }
+.p2 { bottom: 15%; animation-delay: 2.5s; }
+.p3 { top: 20%; animation-delay: 5s; }
+.p4 { bottom: 20%; animation-delay: 7.5s; }
 
 @keyframes blur-reveal-anim {
-
-    0%,
-    100% {
-        opacity: 0;
-        filter: blur(10px);
-        transform: scale(0.9);
-    }
-
-    5%,
-    20% {
-        opacity: 1;
-        filter: blur(0);
-        transform: scale(1);
-    }
-
-    25% {
-        opacity: 0;
-        filter: blur(10px);
-        transform: scale(1.1);
-    }
+    0%, 100% { opacity: 0; filter: blur(10px); transform: scale(0.9); }
+    5%, 20% { opacity: 1; filter: blur(0); transform: scale(1); }
+    25% { opacity: 0; filter: blur(10px); transform: scale(1.1); }
 }
 
 /* Matrix Digital Rain Effect (Canvas) */
@@ -2278,14 +2147,12 @@ html[lang="ja"] .ca-red {
     z-index: 3;
     pointer-events: none;
     opacity: 0.15;
-    /* Keep it faint */
 }
 
 /* Typewriter text */
 .typewriter-container {
     position: absolute;
     bottom: 20px;
-    /* Adjusted for PC/Tablet */
     left: 0;
     width: 100%;
     display: flex;
@@ -2300,7 +2167,6 @@ html[lang="ja"] .ca-red {
     margin: 0;
     border-right: 2px solid rgba(255, 255, 255, .75);
     font-size: 1rem;
-    /* Larger for PC/Tablet */
     text-align: left;
     white-space: nowrap;
     overflow: hidden;
@@ -2323,78 +2189,14 @@ html[lang="ja"] .ca-red {
 }
 
 @keyframes typewriter {
-    from {
-        width: 0;
-    }
-
-    to {
-        width: 35em;
-    }
+    from { width: 0; }
+    to { width: 35em; }
 }
 
 @keyframes blinkingCursor {
-    from {
-        border-right-color: rgba(255, 255, 255, .75);
-    }
-
-    to {
-        border-right-color: transparent;
-    }
+    from { border-right-color: rgba(255, 255, 255, .75); }
+    to { border-right-color: transparent; }
 }
 
-@media (max-width: 768px) {
-    .kanji-marquee-vertical span {
-        font-size: 60px;
-        /* Much smaller on mobile */
-        right: 10px;
-    }
 
-    .brand-danburgess {
-        font-size: 40px;
-    }
-
-    .brand-design {
-        font-size: 80px;
-        margin-top: -10px;
-    }
-
-    .logo-wrapper {
-        width: 100px;
-        height: 100px;
-    }
-
-    .split-slide-container .motion-container {
-        gap: 15px;
-    }
-
-    .blur-phrase {
-        font-size: 0.7rem;
-        padding: 0 20px;
-    }
-}
-
-@media (max-width: 1024px) and (orientation: portrait) {
-    .about-card {
-        min-height: 440px; /* Force a minimum height to prevent peeking */
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-}
-
-@media (max-width: 600px) and (orientation: portrait) {
-    .about-card {
-        padding: 40px 30px;
-        min-height: 480px; /* Slightly taller for mobile text wrapping */
-    }
-
-    .about-card h3 {
-        font-size: 28px;
-        margin-bottom: 16px;
-    }
-
-    .about-card p {
-        font-size: 16px;
-    }
-}
 
