@@ -600,88 +600,21 @@ function initApp() {
         });
     }
 
-    // 6. About Section Single Card Sliding Content Animation
-    function initAboutCardStacking() {
-        const aboutSection = document.querySelector('.about');
-        const contentStrip = document.querySelector('.about-card-content-strip');
-        const aboutCardMain = document.querySelector('.about-card-main');
-        const aboutButton = document.querySelector('.btn-about');
-        const segments = document.querySelectorAll('.about-card-segment');
+    // 6. About Section Staggered Reveal Animation
+    function initAboutReveal() {
+        const revealElements = document.querySelectorAll('.staggered-reveal');
         
-        if (!aboutSection || !contentStrip || !segments.length) return;
-
-        function updateCards() {
-            const rect = aboutSection.getBoundingClientRect();
-            const scrollHeight = aboutSection.offsetHeight - window.innerHeight;
-            const scrollTop = Math.min(Math.max(-rect.top, 0), scrollHeight);
-            const progress = scrollTop / scrollHeight;
-
-            // Discrete phases: Pause1, Slide1-2, Pause2, Slide2-3, Pause3, Exit
-            const numSegments = segments.length;
-            const pauseWeight = 1.5; // Longer pauses for visibility
-            const slideWeight = 0.8; // More intentional slides
-            const exitWeight = 1.0;
-            
-            const totalWeight = (numSegments * pauseWeight) + ((numSegments - 1) * slideWeight) + exitWeight;
-
-            let currentWeight = 0;
-            let translateYStrip = 0;
-            let exitProgress = 0;
-
-            for (let i = 0; i < numSegments; i++) {
-                // Pause phase
-                const pStart = currentWeight / totalWeight;
-                const pEnd = (currentWeight + pauseWeight) / totalWeight;
-                if (progress >= pStart && progress < pEnd) {
-                    translateYStrip = i * 100;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
-                if (progress >= pEnd) {
-                    translateYStrip = i * 100;
-                }
-                currentWeight += pauseWeight;
+            });
+        }, { threshold: 0.1 });
 
-                // Slide phase
-                if (i < numSegments - 1) {
-                    const sStart = currentWeight / totalWeight;
-                    const sEnd = (currentWeight + slideWeight) / totalWeight;
-                    if (progress >= sStart && progress < sEnd) {
-                        const localS = (progress - sStart) / (sEnd - sStart);
-                        // Custom ease-in-out
-                        const easedS = localS < 0.5 ? 4 * localS * localS * localS : 1 - Math.pow(-2 * localS + 2, 3) / 2;
-                        translateYStrip = (i * 100) + (easedS * 100);
-                    }
-                    if (progress >= sEnd) {
-                        translateYStrip = (i + 1) * 100;
-                    }
-                    currentWeight += slideWeight;
-                }
-            }
-
-            // Exit phase
-            const exitStart = currentWeight / totalWeight;
-            if (progress >= exitStart) {
-                exitProgress = (progress - exitStart) / (exitWeight / totalWeight);
-                translateYStrip = (numSegments - 1) * 100;
-            }
-
-            contentStrip.style.transform = `translate3d(0, -${translateYStrip}%, 0)`;
-
-            if (exitProgress > 0) {
-                const easedExit = Math.pow(exitProgress, 1.5);
-                aboutCardMain.style.transform = `translate3d(0, -${easedExit * 120}vh, 0)`;
-                if (aboutButton) {
-                    aboutButton.style.opacity = Math.max(0, 1 - exitProgress * 3).toString();
-                }
-            } else {
-                aboutCardMain.style.transform = `translate3d(0, 0, 0)`;
-                if (aboutButton) aboutButton.style.opacity = '1';
-            }
-        }
-
-        window.addEventListener('scroll', updateCards);
-        updateCards();
+        revealElements.forEach(el => observer.observe(el));
     }
-    initAboutCardStacking();
+    initAboutReveal();
 }
 
 // Start the application logic

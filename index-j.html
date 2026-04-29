@@ -227,31 +227,36 @@
 
     <!-- About Section -->
     <section id="about" class="about">
-        <div class="btn-about">
-            <div class="btn-text-mask">
-                <div class="btn-text-wrapper">
-                    <span class="btn-text">アバウト</span>
+        <div class="about-header">
+            <div class="btn-about">
+                <div class="btn-text-mask">
+                    <div class="btn-text-wrapper">
+                        <span class="btn-text">アバウト</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="about-card-viewport">
-            <div class="about-card-main">
-                <div class="about-card-content-strip">
-                    <div class="about-card-segment card-canada">
-                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Canada-roots.jpg');"></div>
-                        <h3>🍁 カナダでのルーツ</h3>
-                        <p>私のキャリアはカナダでの雑誌レイアウトや看板デザインから始まり、伝統的な美学と技術的基盤を融合させてきました。この初期のビジュアル・コミュニケーションへの関わりが、明快さとインパクトを追求する現在のスタイルの礎となっています。</p>
-                    </div>
-                    <div class="about-card-segment card-japan">
-                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Japan-precision.jpg');"></div>
-                        <h3>🇯🇵&nbsp;&nbsp;日本での精密な仕事</h3>
-                        <p>1992年から日本を拠点とし、長野でのWindowsゲームのローカライズや、東京でのグローバルIT企業のUI制作コーディネートに携わってきました。これらの経験を通じて、技術的な精密さと異文化間のストーリーテリングに対する深い敬意を培いました。</p>
-                    </div>
-                    <div class="about-card-segment card-digital">
-                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Digital-first.jpg');"></div>
-                        <h3>📱 デジタルファースト・デザイン</h3>
-                        <p>現在は、ビジョンと立ち上げの間のギャップを埋めるため、ノーコード開発に特化しています。技術的な摩擦を取り除くことで、クライアントがユーザー価値や、拡張性のある洗練されたデジタル体験に集中できるようサポートします。</p>
-                    </div>
+        <div class="about-cards-container">
+            <!-- 順序: カナダのルーツ、日本の精密さ、デジタル・ファースト -->
+            <div class="about-card staggered-reveal" style="--i: 0;">
+                <div class="about-card-bg" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Canada-roots.jpg');"></div>
+                <div class="about-card-content">
+                    <h3>🍁 カナダのルーツ</h3>
+                    <p>カナダで雑誌レイアウトや看板デザインからキャリアを開始。伝統的な美学と技術的基盤の融合を追求してきました。</p>
+                </div>
+            </div>
+            <div class="about-card staggered-reveal" style="--i: 1;">
+                <div class="about-card-bg" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Japan-precision.jpg');"></div>
+                <div class="about-card-content">
+                    <h3>🇯🇵 日本の精密さ</h3>
+                    <p>1992年から日本を拠点に活動。長野でのWindowsゲームのローカライズや、東京でのグローバルテック企業のUI制作コーディネーターを歴任。</p>
+                </div>
+            </div>
+            <div class="about-card staggered-reveal" style="--i: 2;">
+                <div class="about-card-bg" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Digital-first.jpg');"></div>
+                <div class="about-card-content">
+                    <h3>📱 デジタル・ファースト</h3>
+                    <p>現在はノーコード開発を専門とし、構想からローンチまでの溝を埋め、洗練された拡張性の高い体験を提供しています。</p>
                 </div>
             </div>
         </div>

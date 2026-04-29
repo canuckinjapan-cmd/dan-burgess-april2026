@@ -228,31 +228,36 @@
 
     <!-- About Section -->
     <section id="about" class="about">
-        <div class="btn-about">
-            <div class="btn-text-mask">
-                <div class="btn-text-wrapper">
-                    <span class="btn-text">ABOUT ME</span>
+        <div class="about-header">
+            <div class="btn-about">
+                <div class="btn-text-mask">
+                    <div class="btn-text-wrapper">
+                        <span class="btn-text">ABOUT ME</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="about-card-viewport">
-            <div class="about-card-main">
-                <div class="about-card-content-strip">
-                    <div class="about-card-segment card-canada">
-                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Canada-roots.jpg');"></div>
-                        <h3>🍁 Canada Roots</h3>
-                        <p>My journey began in Canada with magazine layouts and sign design, blending traditional aesthetics with technical foundations. This early exposure to visual communication set the stage for a career dedicated to clarity and impact.</p>
-                    </div>
-                    <div class="about-card-segment card-japan">
-                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Japan-precision.jpg');"></div>
-                        <h3>🇯🇵&nbsp;&nbsp;Japan Precision</h3>
-                        <p>Based in Japan since 1992, I’ve localized Windows games in Nagano and coordinated UI production for global tech giants in Tokyo. This experience instilled a deep respect for technical precision and cross-cultural storytelling.</p>
-                    </div>
-                    <div class="about-card-segment card-digital">
-                        <div class="card-bg-overlay" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Digital-first.jpg');"></div>
-                        <h3>📱 Digital-first Design</h3>
-                        <p>Today, I specialize in No-Code development to bridge the gap between vision and launch. By removing technical friction, I help clients focus on user value and polished digital experiences that scale.</p>
-                    </div>
+        <div class="about-cards-container">
+            <!-- Order: Canada Roots, Japan Precision, Digital First -->
+            <div class="about-card staggered-reveal" style="--i: 0;">
+                <div class="about-card-bg" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Canada-roots.jpg');"></div>
+                <div class="about-card-content">
+                    <h3>🍁 Canada Roots</h3>
+                    <p>My journey began in Canada with magazine layouts and sign design — blending traditional aesthetics with technical foundations.</p>
+                </div>
+            </div>
+            <div class="about-card staggered-reveal" style="--i: 1;">
+                <div class="about-card-bg" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Japan-precision.jpg');"></div>
+                <div class="about-card-content">
+                    <h3>🇯🇵 Japan Precision</h3>
+                    <p>Based in Japan since 1992. Localized Windows games in Nagano, coordinated UI production for global tech in Tokyo.</p>
+                </div>
+            </div>
+            <div class="about-card staggered-reveal" style="--i: 2;">
+                <div class="about-card-bg" style="background-image: url('https://www.danburgess.com/2026-assets/DBD-Digital-first.jpg');"></div>
+                <div class="about-card-content">
+                    <h3>📱 Digital First</h3>
+                    <p>Today I specialize in No-Code development — bridging the gap between vision and launch with polished, scalable experiences.</p>
                 </div>
             </div>
         </div>

@@ -363,9 +363,8 @@ h6,
     border: 1px solid #ddd;
     text-align: center;
     pointer-events: none; /* Not clickable */
-    position: sticky;
-    top: 80px;
-    z-index: 5; /* Lower than cards so they can cover it on scroll-out */
+    position: relative;
+    z-index: 5; 
     scroll-margin-top: 120px;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
@@ -480,119 +479,131 @@ html[lang="ja"] .ca-red {
     }
 }
 
-/* About Section Single Card Sliding Content */
+/* About Section 3-Card Layout */
 .about {
-    padding: 0 40px 0;
+    padding: 100px 40px;
     background-image: url("https://danburgess.com/2026-assets/rice-paper-2.png");
     background-color: var(--color-bg);
     position: relative;
-    height: 500vh; /* Increased for better scroll control */
+    overflow: hidden;
 }
 
-.about-card-viewport {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    max-width: 1200px;
-    margin: 0 auto;
+.about-header {
     display: flex;
-    align-items: flex-start;
     justify-content: center;
-    overflow: visible;
 }
 
-.about-card-main {
+.about-cards-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+    .about-cards-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.about-card {
     position: relative;
-    top: 160px;
-    width: 100%;
-    height: 580px;
     background: #ffffff;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    border-radius: 0px;
     border: 1.583333px solid #646464;
+    border-radius: 0px;
     overflow: hidden;
-    z-index: 10;
-}
-
-.about-card-content-strip {
+    height: 400px; /* Reduced height */
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
-    will-change: transform;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+    transition-delay: calc(var(--i) * 0.2s);
 }
 
-.about-card-segment {
-    flex: 0 0 100%;
-    width: 100%;
-    height: 100%;
-    padding: 100px 80px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.about-card.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.card-bg-overlay {
+.about-card-bg {
     position: absolute;
     top: 0;
     right: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
-    pointer-events: none;
     background-size: cover;
     background-position: center right;
-    background-repeat: no-repeat;
-    opacity: 0.5;
-    mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 50%);
-    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 50%);
+    z-index: 0;
 }
 
-.about-card-segment h3 {
+/* White gradation (fade from left to right) */
+.about-card-bg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Gradation reveals ~30% of the image on the right */
+    background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 40%, rgba(255,255,255,0.7) 70%, rgba(255,255,255,0) 100%);
+}
+
+.about-card-content {
+    position: relative;
+    z-index: 1;
+    padding: 40px 32px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.about-card-content h3 {
     font-family: var(--font-display);
-    font-size: 48px;
-    margin-bottom: 32px;
+    font-size: 36px; /* Increased for desktop */
+    margin-bottom: 24px;
     color: #111;
-    position: relative;
-    z-index: 1;
 }
 
-.about-card-segment p {
-    font-size: 24px;
-    line-height: 1.7;
+.about-card-content p {
+    font-size: 20px;
+    line-height: 1.6;
     color: #444;
-    max-width: 900px;
-    position: relative;
-    z-index: 1;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
     .about {
-        padding: 0 10px 0; /* Make card wider on mobile */
+        padding: 60px 20px;
     }
-    .about-card-main {
-        height: 400px; /* Reduced height to fit on screen */
-        top: 160px; /* Moved up to reduce gap above title */
-        padding-bottom: 0;
+    .about-card {
+        height: auto;
+        min-height: 320px;
     }
-    .about-card-segment {
-        padding: 30px 20px; /* Narrower vertical padding to move text up */
-        height: 400px;
+    .about-card-content {
+        padding: 40px 30px;
     }
-    .about-card-segment h3 {
-        font-size: 28px;
-        margin-bottom: 20px;
+    .about-card-content h3 {
+        font-size: 36px;
     }
-    .about-card-segment p {
-        font-size: 17px;
-        line-height: 1.5; /* Less space between lines */
+    .about-card-content p {
+        font-size: 20px;
     }
-    .card-bg-overlay {
-        mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
-        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
-        background-position: center top;
-        opacity: 0.2;
+}
+
+@media (max-width: 600px) {
+    .about-card {
+        min-height: 260px;
+    }
+    .about-card-content {
+        padding: 24px 20px;
+    }
+    .about-card-content h3 {
+        font-size: 32px;
+    }
+    .about-card-content p {
+        font-size: 19px;
     }
 }
 
@@ -1037,14 +1048,18 @@ html[lang="ja"] .ca-red {
 .create-text {
     font-family: var(--font-display);
     font-size: 8vw;
-    line-height: 0.9;
+    line-height: 1.1;
     text-align: center;
     letter-spacing: -0.05em;
     color: #000;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to prevent clipping */
+}
+
+.lang-ja .create-text {
+    line-height: 1.2;
 }
 
 .slide-left,
@@ -1604,10 +1619,6 @@ html[lang="ja"] .ca-red {
     .about {
         padding-top: 60px;
     }
-
-    .about-card-wrapper {
-        top: 140px;
-    }
 }
 
 @media (max-width: 768px) {
@@ -1825,12 +1836,7 @@ html[lang="ja"] .ca-red {
     }
 
     .btn-about {
-        top: 80px;
         margin-bottom: 30px;
-    }
-
-    .about-card-wrapper {
-        top: 150px;
     }
 
     .contact-info .drop-text-small {
@@ -1876,12 +1882,7 @@ html[lang="ja"] .ca-red {
     }
 
     .btn-about {
-        top: 70px;
         margin-bottom: 20px;
-    }
-
-    .about-card-wrapper {
-        top: 130px;
     }
 
     .hero-intro {
@@ -1969,16 +1970,10 @@ html[lang="ja"] .ca-red {
 
     .about {
         padding-top: 30px;
-        /* Add more space below grey section */
     }
 
     .btn-about {
-        top: 90px;
         margin-bottom: 40px;
-    }
-
-    .about-card-wrapper {
-        top: 180px;
     }
 }
 
