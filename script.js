@@ -181,7 +181,7 @@ function initApp() {
             document.querySelectorAll('.hero-entry-mask').forEach(mask => {
                 mask.classList.add('animation-finished');
             });
-        }, 2500);
+        }, 3500);
     }
 
     // 3. Portfolio Animation & Services Sticky Scale
@@ -197,9 +197,9 @@ function initApp() {
             const progress = scrollTop / scrollHeight;
 
             // Weights for phases per item
-            const travelWeight = 1.2; // Entry duration (sliding in from bottom)
-            const exitWeight = 1.8;   // Exit duration (sliding up to leave)
-            const pauseWeight = 3.0;  // TOTAL PAUSE DURATION: Increase this to keep the card on screen longer
+            const travelWeight = 6.2; // Entry duration (sliding in from bottom)
+            const exitWeight = 4.8;   // Exit duration (sliding up to leave)
+            const pauseWeight = 12.0;  // TOTAL PAUSE DURATION: Increase this to keep the card on screen longer
             const itemCycle = travelWeight + pauseWeight + exitWeight; // Total duration per item
             const overlap = 1.0;   // How much the next card's entry overlaps the current card's exit
             

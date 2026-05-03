@@ -347,27 +347,6 @@ h6,
     border-radius: 999px;
 }
 
-.btn-about {
-    display: table;
-    margin: 0 auto 60px;
-    background: #fff;
-    color: #000;
-    padding: 16px 40px;
-    border-radius: 999px;
-    font-family: var(--font-display);
-    font-size: 18px;
-    line-height: 1;
-    text-decoration: none;
-    cursor: default;
-    border: 1px solid #ddd;
-    text-align: center;
-    pointer-events: none; /* Not clickable */
-    position: relative;
-    z-index: 5; 
-    scroll-margin-top: 120px;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
 .ca-red {
     color: #d80621;
     display: inline-block;
@@ -653,6 +632,42 @@ html[lang="ja"] .ca-red {
     justify-content: center;
 }
 
+.mobile-only {
+    display: none;
+}
+
+.section-label {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 8vw;
+    line-height: 0.9;
+    color: #000;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+.about-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 8vw; /* Same as section-title */
+    line-height: 1;
+    margin-bottom: 60px;
+    text-align: center;
+    color: #000;
+    white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+    .section-label {
+        font-size: 48px;
+    }
+    .about-title {
+        font-size: 48px; /* Same as section-title mobile */
+    }
+}
+
+
 .section-transition.right {
     justify-content: flex-end;
 }
@@ -794,9 +809,7 @@ html[lang="ja"] .ca-red {
     transition: none; /* Controlled by JS now */
 }
 
-.portfolio-item:hover .typewriter-container p {
-    opacity: 1;
-}
+
 
 .portfolio-image-wrapper {
     position: relative;
@@ -819,15 +832,84 @@ html[lang="ja"] .ca-red {
 
 .portfolio-caption {
     position: absolute;
-    top: 20px;
+    bottom: 20px;
     left: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 4px;
-    z-index: 2;
+    background: #000000;
+    padding: 10px 25px;
+    z-index: 10;
+    pointer-events: none;
+    border-radius: 100px;
+    border: 1px solid #ffffff;
+    display: flex;
+    align-items: center;
+    height: 48px;
+}
+
+.portfolio-caption.jp {
+    left: calc(100% + 20px);
+}
+
+.portfolio-caption .btn-text-mask {
+    height: 24px;
+    overflow: hidden;
+    display: block;
+}
+
+.portfolio-caption .btn-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portfolio-caption .btn-text,
+.portfolio-caption .btn-text-hover {
+    font-size: 18px;
+    line-height: 24px;
+    height: 24px;
+    font-weight: 700;
+    font-family: var(--font-display);
+    white-space: nowrap;
+    text-transform: none;
+}
+
+.portfolio-caption .btn-text {
+    color: #27D3F5;
+}
+
+.portfolio-caption .btn-text-hover {
+    color: var(--color-orange);
+}
+
+.portfolio-item:hover .portfolio-caption .btn-text-wrapper {
+    transform: translateY(-24px);
+}
+
+@media (max-width: 767px) {
+    .portfolio-caption {
+        bottom: 10px;
+        left: 10px;
+        padding: 6px 15px;
+        height: 34px;
+    }
+
+    .portfolio-caption.jp {
+        left: calc(100% + 10px);
+    }
+
+    .portfolio-caption .btn-text-mask {
+        height: 18px;
+    }
+
+    .portfolio-caption .btn-text,
+    .portfolio-caption .btn-text-hover {
+        font-size: 14px;
+        line-height: 18px;
+        height: 18px;
+    }
+
+    .portfolio-item:hover .portfolio-caption .btn-text-wrapper {
+        transform: translateY(-18px);
+    }
 }
 
 /* Services Section */
@@ -1066,6 +1148,8 @@ html[lang="ja"] .ca-red {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 0.2em; /* Add gap to prevent line overlap */
+    margin-bottom: 60px; /* Add margin bottom to push subtitle down */
     overflow: visible; /* Changed from hidden to prevent clipping */
 }
 
@@ -1570,11 +1654,19 @@ html[lang="ja"] .ca-red {
         text-align: center;
     }
 
+    .portfolio-intro-btn {
+        order: 3; /* Below scroll down anima which is order 2 (default) */
+        margin-top: 10px;
+    }
+
     .section-transition .transition-text {
         display: none;
     }
 
     .section-transition {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
         background-color: transparent;
     }
 
@@ -1627,7 +1719,12 @@ html[lang="ja"] .ca-red {
 
     .section-title {
         font-size: 48px;
+        line-height: 1.1;
         margin-bottom: 40px;
+    }
+
+    .mobile-only {
+        display: block;
     }
 
     .portfolio {
@@ -1823,10 +1920,6 @@ html[lang="ja"] .ca-red {
         padding-bottom: 60px;
     }
 
-    .btn-about {
-        margin-bottom: 30px;
-    }
-
     .contact-info .drop-text-small {
         font-size: 32px;
         line-height: 1.1;
@@ -1867,10 +1960,6 @@ html[lang="ja"] .ca-red {
     .hero {
         padding-top: calc(var(--header-height) + 15px);
         min-height: 100vh;
-    }
-
-    .btn-about {
-        margin-bottom: 20px;
     }
 
     .hero-intro {
@@ -1947,10 +2036,6 @@ html[lang="ja"] .ca-red {
 
     .hero-intro {
         margin-bottom: 20px;
-    }
-
-    .btn-about {
-        margin-bottom: 40px;
     }
 
     .kanji-marquee-vertical span {
@@ -2149,54 +2234,7 @@ html[lang="ja"] .ca-red {
     opacity: 0.15;
 }
 
-/* Typewriter text */
-.typewriter-container {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    padding-left: 30px;
-    pointer-events: none;
-}
 
-.cursor {
-    position: relative;
-    width: 35em;
-    margin: 0;
-    border-right: 2px solid rgba(255, 255, 255, .75);
-    font-size: 1rem;
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    color: white;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 5px 10px;
-    border-radius: 3px;
-    transition: color 0.3s ease, border-color 0.3s ease;
-}
-
-.portfolio-item:hover .cursor {
-    color: var(--color-orange);
-    border-right-color: var(--color-orange);
-}
-
-.typewriter-animation {
-    animation:
-        typewriter 8s steps(50) 1s 1 normal both,
-        blinkingCursor 500ms steps(50) infinite normal;
-}
-
-@keyframes typewriter {
-    from { width: 0; }
-    to { width: 35em; }
-}
-
-@keyframes blinkingCursor {
-    from { border-right-color: rgba(255, 255, 255, .75); }
-    to { border-right-color: transparent; }
-}
 
 
 
