@@ -44,6 +44,7 @@
     --font-body: 'Source Sans 3', sans-serif;
     --font-serif: 'Playfair Display', serif;
     --font-ja: 'Noto Sans JP', sans-serif;
+    --font-kanji: 'Noto Sans JP', sans-serif;
     --header-height: 60px;
 }
 
@@ -494,17 +495,37 @@ html[lang="ja"] .ca-red {
 .about-card {
     position: relative;
     background: #ffffff;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    border: 1.583333px solid #646464;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eaeaea;
     border-radius: 0px;
     overflow: hidden;
-    height: 440px; /* Increased slightly from 400px to accommodate larger desktop pulse */
+    height: 480px;
     display: flex;
     flex-direction: column;
     opacity: 0;
-    transform: translateY(100px);
-    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
-    transition-delay: calc(var(--i) * 0.2s);
+    transform: translateY(60px);
+    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease;
+    transition-delay: calc(var(--i) * 0.15s);
+}
+
+.card-kanji {
+    position: absolute;
+    bottom: -30px;
+    left: -20px;
+    font-family: var(--font-kanji);
+    font-weight: 900;
+    font-size: 240px;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.14);
+    pointer-events: none;
+    z-index: 1;
+    user-select: none;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease;
+}
+
+.about-card:hover .card-kanji {
+    transform: scale(1.1) rotate(-5deg);
+    color: rgba(242, 125, 38, 0.20);
 }
 
 .about-card.visible {
@@ -516,12 +537,12 @@ html[lang="ja"] .ca-red {
     .about-card {
         transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), 
                     box-shadow 0.6s ease, 
-                    opacity 1.2s ease;
+                    opacity 1s ease;
     }
 
     .about-card.visible:hover {
-        transform: translateY(-10px) scale(1.015);
-        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
+        transform: translateY(-8px);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
         z-index: 10;
     }
 }
@@ -535,9 +556,14 @@ html[lang="ja"] .ca-red {
     background-size: cover;
     background-position: center right;
     z-index: 0;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* White gradation (fade from left to right) */
+.about-card:hover .about-card-bg {
+    transform: scale(1.05);
+}
+
+/* Updated gradation for cleaner look */
 .about-card-bg::after {
     content: '';
     position: absolute;
@@ -545,30 +571,52 @@ html[lang="ja"] .ca-red {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Gradation reveals ~30% of the image on the right */
-    background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 40%, rgba(255,255,255,0.7) 70%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(105deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 45%, rgba(255,255,255,0.4) 75%, rgba(255,255,255,0) 100%);
 }
 
 .about-card-content {
     position: relative;
-    z-index: 1;
-    padding: 48px 40px; /* Reduced side padding slightly */
+    z-index: 2;
+    padding: 60px 40px;
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
 }
 
 .about-card-content h3 {
     font-family: var(--font-display);
-    font-size: 38px; /* Slightly larger for desktop */
-    margin-bottom: 24px;
-    color: #111;
+    font-weight: 900;
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #000;
+    letter-spacing: -0.02em;
+    position: relative;
+    width: 100%;
+}
+
+.about-card-content h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--color-orange);
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-card:hover .about-card-content h3::after {
+    width: 100%;
+    background: linear-gradient(to right, var(--color-orange) 0%, transparent 100%);
 }
 
 .about-card-content p {
-    font-size: 22px; /* Increased for desktop per request */
+    font-family: var(--font-body);
+    font-size: 19px;
     line-height: 1.6;
     color: #444;
+    max-width: 85%;
 }
 
 @media (max-width: 1023px) {
@@ -595,21 +643,31 @@ html[lang="ja"] .ca-red {
         padding: 60px 16px !important; /* Decrease margin size on mobile */
     }
     .about-card {
-        min-height: 280px !important; /* Reduced card height even more */
+        min-height: 280px !important;
         height: auto !important;
     }
+    .card-kanji {
+        font-size: 160px;
+        bottom: -20px;
+        left: -10px;
+    }
     .about-card-content {
-        padding: 20px 16px !important; /* Much tighter padding for mobile */
+        padding: 30px 20px !important;
         width: 100% !important;
     }
     .about-card-content h3 {
-        font-size: 32px !important; /* Mobile title size */
+        font-size: 28px !important;
         margin-bottom: 12px !important;
     }
+    .about-card-content h3::after {
+        bottom: -4px;
+        height: 2px;
+    }
     .about-card-content p {
-        font-size: 20px !important; /* Mobile body size - 34px was likely too large for the container */
+        font-size: 18px !important;
         line-height: 1.4 !important;
         width: 100% !important;
+        max-width: 100%;
     }
     /* Adjust gradation on mobile so it doesn't crowd the text */
     .about-card-bg::after {
